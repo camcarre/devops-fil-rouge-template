@@ -100,10 +100,12 @@ Exemples : `feat: add Dockerfile for API service` · `ci: add lint and test work
 
 | Rôle | Responsabilités | Titulaire |
 |------|-----------------|-----------|
-| Lead Dev | Code applicatif, Dockerfile du service | _à remplir_ |
-| Lead Ops | Compose, K8s, monitoring, doc déploiement | _à remplir_ |
-| Lead Qualité / CI | Pipeline, tests, revue sécurité de base | _à remplir_ |
-| Lead Produit / Doc | README, note d'archi, post-mortem | _à remplir_ |
+| Lead Dev | Code applicatif, Dockerfile du service | Théo Delporte |
+| Lead Ops | Compose, K8s, monitoring, doc déploiement | [Prénom Nom — à remplir] |
+| Lead Qualité / CI | Pipeline, tests, revue sécurité de base | [Prénom Nom — à remplir] |
+| Lead Produit / Doc | README, note d'archi, post-mortem | [Prénom Nom — à remplir] |
+
+Canal de communication : [Teams / Discord — à remplir]
 
 > Un membre peut cumuler 2 rôles dans un petit groupe — documenter qui fait quoi.
 
