@@ -1,7 +1,23 @@
+# Secrets — ne jamais commiter
+.env
 *.env
-node_modules/
+
+# Python
 __pycache__/
-.DS_Store
 *.pyc
+*.pyo
+.venv/
+venv/
+
+# Node (si front ajouté)
+node_modules/
+
+# IDE
 .vscode/
 .idea/
+
+# OS
+.DS_Store
+
+# Docker
+*.log
