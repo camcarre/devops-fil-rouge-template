@@ -11,13 +11,13 @@ See: .paul/PROJECT.md (updated 2026-06-03)
 
 Milestone: v0.1 Fil Rouge (S1→S6)
 Phase: 3 of 6 (S3 — docker-compose + CI verte)
-Plan: Phase 2 COMPLÈTE — prêt pour Phase 3
-Status: Ready to plan 03-01
-Last activity: 2026-06-04 — Phase 2 terminée : docker-compose up fonctionnel, api↔db validé
+Plan: 03-02 tests DONE (17 passed) — next 03-03 CI workflow
+Status: Phase 3 en cours (Lead Qualité/CI)
+Last activity: 2026-06-04 — 03-02 : suite pytest (health + auth + CRUD forum), 17/17 PASS sur SQLite in-memory
 
 Progress:
 - Milestone: [████░░░░░░] 33% (Phase 1 + 2 done)
-- Phase 3: [░░░░░░░░░░] 0%
+- Phase 3: [███░░░░░░░] 25% (03-02 done ; 03-01 compose livré en S2)
 
 ## Loop Position
 
