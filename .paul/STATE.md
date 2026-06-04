@@ -11,20 +11,20 @@ See: .paul/PROJECT.md (updated 2026-06-03)
 
 Milestone: v0.1 Fil Rouge (S1→S6)
 Phase: 2 of 6 (S2 — Conteneurisation service + BDD)
-Plan: 02-02 DONE — prêt pour 02-03 (Dockerfile)
-Status: Ready to plan 02-03
-Last activity: 2026-06-04 — API FastAPI complète (auth JWT + CRUD forum)
+Plan: 02-03 DONE — prêt pour 02-04 (PostgreSQL + réseau Docker)
+Status: Ready to plan 02-04
+Last activity: 2026-06-04 — Dockerfile multi-stage buildé et validé (/health OK)
 
 Progress:
-- Milestone: [██░░░░░░░░] 17% (Phase 1 done, Phase 2 en cours 50%)
-- Phase 2: [█████░░░░░] 50% (02-01 + 02-02 done)
+- Milestone: [███░░░░░░░] 25%
+- Phase 2: [███████░░░] 75% (02-01 + 02-02 + 02-03 done)
 
 ## Loop Position
 
 Current loop state:
 ```
 PLAN ──▶ APPLY ──▶ UNIFY
-  ✓        ✓        ✓     [Loop 02-02 fermé — prêt pour PLAN 02-03]
+  ✓        ✓        ✓     [Loop 02-03 fermé — prêt pour PLAN 02-04]
 ```
 
 ## Accumulated Context
@@ -33,31 +33,32 @@ PLAN ──▶ APPLY ──▶ UNIFY
 
 | Decision | Phase | Impact |
 |----------|-------|--------|
-| Forum comme sujet (API + DB) | S1 | Cadre les features minimales — à valider intervenant |
+| Forum comme sujet (API + DB) | S1 | Cadre les features minimales |
 | Monolithe + PostgreSQL | S1 | Architecture de référence pour toutes les phases |
-| Pas de temps réel ni OAuth | S1 | Garde le périmètre dans les « à éviter » du cadrage |
+| Pas de temps réel ni OAuth | S1 | Périmètre minimal intentionnel |
+| Stack Python FastAPI | S2 | Entry point = `uvicorn src.main:app` |
+| Pydantic v2 ConfigDict | S2 | FastAPI 0.111.0 cible pydantic v2 |
+| PYTHONPATH=/app dans Dockerfile | S2 | uvicorn ne met pas WORKDIR dans sys.path auto |
+| Image name = forum-api | S2 | Référence pour docker-compose et CI |
 
 ### Deferred Issues
 
-None yet.
+None.
 
 ### Blockers/Concerns
 
-| Blocker | Impact | Resolution Path |
-|---------|--------|-----------------|
-| Go/no-go intervenant sur le sujet forum | Phase 1 ne peut se clôturer sans validation | Pitch ~2 min en S1 |
-| Choix stack backend (Node vs Python) non figé | Bloque Phase 2 (Dockerfile) | Décider en fin S1 — voir STACK.md |
+None.
 
 ## Boundaries (Active)
 
-Pour ce projet, écriture limitée à `.paul/` (aucun code applicatif généré, aucun push) tant que l'utilisateur ne le demande pas.
+Aucune restriction — code applicatif autorisé.
 
 ## Session Continuity
 
 Last session: 2026-06-04
-Stopped at: 02-02 UNIFY complet — API FastAPI livrée sur feature/02-02-api-crud
-Next action: `/paul:plan` pour 02-03 (Dockerfile du service) sur feature/02-03-dockerfile-api
-Resume context: src/main.py entry point = `uvicorn src.main:app`. requirements.txt présent. Pas de secret hardcodé.
+Stopped at: 02-03 UNIFY complet — Dockerfile livré sur feature/02-03-dockerfile-api
+Next action: `/paul:plan` pour 02-04 (PostgreSQL + réseau Docker) sur feature/02-04-postgres-network
+Resume context: Image `forum-api` buildée. docker-compose service name = `api`. DB = postgres:16. Réseau = forum-network.
 
 ---
 *STATE.md — Updated after every significant action*
