@@ -38,6 +38,18 @@ export async function register(username: string, email: string, password: string
 export function logout() { localStorage.removeItem("token") }
 export function isLoggedIn() { return !!localStorage.getItem("token") }
 
+// Décode le JWT (sans vérif) pour récupérer l'id de l'utilisateur courant (champ 'sub').
+export function currentUserId(): number | null {
+  const t = localStorage.getItem("token")
+  if (!t) return null
+  try {
+    const payload = JSON.parse(atob(t.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")))
+    return Number(payload.sub)
+  } catch {
+    return null
+  }
+}
+
 export type Category = { id: number; name: string; description: string }
 export type Topic = { id: number; title: string; category_id: number; user_id: number }
 export type Post = { id: number; content: string; topic_id: number; user_id: number; created_at: string }
