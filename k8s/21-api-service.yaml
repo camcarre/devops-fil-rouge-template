@@ -1,0 +1,18 @@
+# Service de l'API.
+# ClusterIP (interne au cluster) : l'exposition externe se fait via l'Ingress (04-04).
+# Donne un nom DNS stable "api" dans le namespace forum.
+apiVersion: v1
+kind: Service
+metadata:
+  name: api
+  namespace: forum
+  labels:
+    app: forum-api
+spec:
+  type: ClusterIP
+  selector:
+    app: forum-api
+  ports:
+    - port: 8000
+      targetPort: 8000
+      name: http

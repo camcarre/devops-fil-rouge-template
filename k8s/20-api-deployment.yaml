@@ -1,0 +1,72 @@
+# API forum (FastAPI) en Deployment.
+# Deployment (et non StatefulSet) car l'API est STATELESS : aucun état local,
+# tout l'état vit dans PostgreSQL → on peut scaler/redéployer librement.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+  namespace: forum
+  labels:
+    app: forum-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: forum-api
+  template:
+    metadata:
+      labels:
+        app: forum-api
+    spec:
+      # initContainer : applique les migrations Alembic AVANT de démarrer l'API.
+      # Sépare proprement "préparer le schéma" de "servir les requêtes".
+      initContainers:
+        - name: migrate
+          image: devops-fil-rouge-template-api:latest
+          imagePullPolicy: IfNotPresent   # image chargée via 'minikube image load', pas de pull registry
+          command: ["alembic", "upgrade", "head"]
+          env:
+            - name: PYTHONPATH
+              value: /app
+            - name: POSTGRES_USER
+              valueFrom: { configMapKeyRef: { name: forum-config, key: POSTGRES_USER } }
+            - name: POSTGRES_DB
+              valueFrom: { configMapKeyRef: { name: forum-config, key: POSTGRES_DB } }
+            - name: POSTGRES_PASSWORD
+              valueFrom: { secretKeyRef: { name: forum-secret, key: POSTGRES_PASSWORD } }
+            - name: DATABASE_URL
+              value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@db:5432/$(POSTGRES_DB)"
+      containers:
+        - name: api
+          image: devops-fil-rouge-template-api:latest
+          imagePullPolicy: IfNotPresent
+          command: ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
+          ports:
+            - containerPort: 8000
+          env:
+            - name: PYTHONPATH
+              value: /app
+            - name: PORT
+              value: "8000"
+            - name: POSTGRES_USER
+              valueFrom: { configMapKeyRef: { name: forum-config, key: POSTGRES_USER } }
+            - name: POSTGRES_DB
+              valueFrom: { configMapKeyRef: { name: forum-config, key: POSTGRES_DB } }
+            - name: POSTGRES_PASSWORD
+              valueFrom: { secretKeyRef: { name: forum-secret, key: POSTGRES_PASSWORD } }
+            - name: DATABASE_URL
+              value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@db:5432/$(POSTGRES_DB)"
+            - name: SECRET_KEY
+              valueFrom: { secretKeyRef: { name: forum-secret, key: SECRET_KEY } }
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 10
