@@ -10,14 +10,14 @@ See: .paul/PROJECT.md (updated 2026-06-03)
 ## Current Position
 
 Milestone: v0.1 Fil Rouge (S1→S6)
-Phase: 3 of 6 (S3 — docker-compose + CI verte)
-Plan: 03-03 CI workflow DONE (ruff+pytest+build, badge README) — next 03-04 GitHub Secrets
-Status: Phase 3 en cours (Lead Qualité/CI)
-Last activity: 2026-06-04 — 03-03 : .github/workflows/ci.yml (lint+test+build), ruff All passed + 17 tests PASS en local
+Phase: 3 of 6 (S3 — docker-compose + CI verte) — COMPLÈTE
+Plan: 03-04 GitHub Secrets DONE — Phase 3 terminée ; next Phase 4 (K8s, Lead Ops)
+Status: Phase 3 COMPLÈTE (Lead Qualité/CI) — prêt pour Phase 4
+Last activity: 2026-06-04 — 03-04 : 4 GitHub Secrets + job CI integration (compose up + /health), CI verte
 
 Progress:
-- Milestone: [████░░░░░░] 33% (Phase 1 + 2 done)
-- Phase 3: [██████░░░░] 75% (03-01 compose + 03-02 tests + 03-03 CI ; reste 03-04 secrets)
+- Milestone: [██████░░░░] 50% (Phase 1 + 2 + 3 done)
+- Phase 3: [██████████] 100% (03-01 compose + 03-02 tests + 03-03 CI + 03-04 secrets)
 
 ## Loop Position
 

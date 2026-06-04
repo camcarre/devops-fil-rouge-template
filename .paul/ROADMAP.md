@@ -19,7 +19,7 @@ Phases: 2 of 6 complete
 |-------|------|-------|--------|-----------|
 | 1 | S1 — Cadrage & Setup Git | 3 | Done | 2026-06-03 |
 | 2 | S2 — Conteneurisation service + BDD | 4 | Done | 2026-06-04 |
-| 3 | S3 — docker-compose + CI verte | 4 | Not started | - |
+| 3 | S3 — docker-compose + CI verte | 4 | Done | 2026-06-04 |
 | 4 | S4 — Déploiement Kubernetes local | 4 | Not started | - |
 | 5 | S5 — Monitoring + scan + post-mortem | 4 | Not started | - |
 | 6 | S6 — Soutenance | 3 | Not started | - |
@@ -80,10 +80,10 @@ Phases: 2 of 6 complete
 - Badge CI dans le README
 
 **Plans:**
-- [ ] 03-01: `docker-compose.yml` (api + db, env, volumes, healthchecks)
+- [x] 03-01: `docker-compose.yml` (api + db, env, volumes, healthchecks)
 - [x] 03-02: Tests automatisés (unit + smoke API)
 - [x] 03-03: Workflow `.github/workflows/ci.yml` (lint + test + build) vert
-- [ ] 03-04: Configurer GitHub Secrets + mettre `.env.example` à jour
+- [x] 03-04: Configurer GitHub Secrets + mettre `.env.example` à jour
 
 ### Phase 4: S4 — Déploiement Kubernetes local
 
