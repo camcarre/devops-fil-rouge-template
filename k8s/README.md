@@ -32,6 +32,11 @@ Manifests de déploiement du forum sur un cluster Kubernetes local (**minikube**
 | `20-api-deployment.yaml`| Deployment           | API FastAPI + migration (initContainer) |
 | `21-api-service.yaml`   | Service ClusterIP    | DNS interne `api:8000` |
 | `30-ingress.yaml`       | Ingress              | Entrée HTTP `forum.local` |
+| `40-grafana-datasource.yaml` | ConfigMap | Provisionne une datasource Prometheus pour Grafana |
+| `41-grafana-dashboard-configmap.yaml` | ConfigMap | Provisionne un dashboard Grafana pour le service forum |
+| `42-grafana-deployment.yaml` | Deployment | Grafana avec provisionneur de dashboards |
+| `43-grafana-service.yaml` | Service | Expose Grafana sur le cluster |
+| `44-grafana-ingress.yaml` | Ingress | Accès Grafana `grafana.local` |
 
 ## Prérequis
 
@@ -58,6 +63,8 @@ kubectl --context forum apply -f k8s/
 
 # 5. Attendre que tout soit prêt
 kubectl --context forum -n forum rollout status deployment/api
+echo "Waiting for Grafana..."
+kubectl --context forum -n forum rollout status deployment/grafana
 ```
 
 ## Accès à l'application
@@ -70,6 +77,20 @@ sudo minikube tunnel --profile=forum     # laisse tourner dans un terminal
 echo "127.0.0.1 forum.local" | sudo tee -a /etc/hosts
 curl http://forum.local/health           # {"status":"ok"}
 ```
+
+## Accès à Grafana
+
+```bash
+sudo minikube tunnel --profile=forum
+echo "127.0.0.1 grafana.local" | sudo tee -a /etc/hosts
+curl http://grafana.local
+```
+
+- URL Grafana : `http://grafana.local`
+- Login : `admin`
+- Password : `admin`
+
+Le dashboard est provisionné automatiquement via les manifests Kubernetes.
 
 **Méthode 2 — port-forward (rapide, sans tunnel).**
 
