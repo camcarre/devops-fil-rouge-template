@@ -1,0 +1,11 @@
+# Configuration NON sensible, partagée par db et api.
+# Les valeurs sensibles (mots de passe, clés) vont dans le Secret, jamais ici.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: forum-config
+  namespace: forum
+data:
+  POSTGRES_USER: forum_user
+  POSTGRES_DB: forum
+  PORT: "8000"
