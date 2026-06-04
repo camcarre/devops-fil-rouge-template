@@ -1,0 +1,23 @@
+# Ingress : point d'entrée HTTP du cluster vers l'API.
+# Route http://forum.local/ → service 'api' (port 8000).
+# Géré par l'ingress-nginx de minikube (addon ingress).
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: forum-ingress
+  namespace: forum
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: forum.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: api
+                port:
+                  number: 8000
