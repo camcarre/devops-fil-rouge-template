@@ -2,9 +2,9 @@
 
 [![CI](https://github.com/camcarre/devops-fil-rouge-template/actions/workflows/ci.yml/badge.svg)](https://github.com/camcarre/devops-fil-rouge-template/actions/workflows/ci.yml)
 
-**Équipe :** Théo Delporte, [Prénom Nom], [Prénom Nom], [Prénom Nom]
-**Groupe / promo :** B3 — [Promo — à remplir]
-**Dépôt :** https://github.com/[organisation]/devops-fil-rouge-[equipe]
+**Équipe :** Théo Delporte, TODO: [Prénom Nom], TODO: [Prénom Nom], TODO: [Prénom Nom]
+**Groupe / promo :** B3 — TODO: [Promo]
+**Dépôt :** https://github.com/camcarre/devops-fil-rouge-[equipe]
 
 ---
 
@@ -30,11 +30,11 @@ Application web de forum de discussion organisée en catégories, sujets et mess
 | Membre | Rôle | Responsabilité principale |
 | ------ | ---- | ------------------------- |
 | Théo Delporte | Lead Dev | Code applicatif, modèles SQLAlchemy, API FastAPI, Dockerfile |
-| [Prénom Nom] | Lead Ops | docker-compose, manifests Kubernetes, monitoring, doc déploiement |
-| [Prénom Nom] | Lead Qualité / CI | Pipeline GitHub Actions, tests automatisés, scan sécurité |
+| TODO: [Prénom Nom] | Lead Ops | docker-compose, manifests Kubernetes, monitoring, doc déploiement |
+| TODO: [Prénom Nom] | Lead Qualité / CI | Pipeline GitHub Actions, tests automatisés, scan sécurité |
 | Cléo Deroo | Lead Produit / Doc | README, note d'architecture, post-mortem |
 
-Canal de communication : [Teams / Discord — à remplir]
+Canal de communication : TODO: [Teams/Discord]
 
 ---
 
@@ -55,17 +55,17 @@ Canal de communication : [Teams / Discord — à remplir]
 | S3 | docker-compose + CI verte | ✅ |
 | S4 | Manifests K8s appliqués | ✅ |
 | S5 | Monitoring + post-mortem | ✅ |
-| S6 | Soutenance prête | ☐ |
+| S6 | Soutenance prête | 🔄 En cours |
 
 - Post-mortem : `docs/postmortem.md`
+- Note d'architecture : `docs/architecture.md`
 
 ---
 
-## Démarrage local (à compléter au fil des séances)
+## Démarrage local
 
 ```bash
-# À documenter progressivement — pas besoin de tout remplir en S1
-git clone https://github.com/[organisation]/devops-fil-rouge-[equipe]
+git clone https://github.com/camcarre/devops-fil-rouge-[equipe]
 cd devops-fil-rouge-[equipe]
 cp .env.example .env
 # Remplir les valeurs dans .env
@@ -75,10 +75,26 @@ cp .env.example .env
 
 ## Communication d'équipe
 
-Canal utilisé : [Teams / Discord — à remplir]
+Canal utilisé : TODO: [Teams/Discord]
 
 ---
 
 ## Participation S1
 
 Jeu de rôle déploiement : leçon retenue — un secret commité dans Git est considéré compromis et doit être révoqué immédiatement, même si l'historique est nettoyé ensuite. La règle `.env` dans `.gitignore` dès le premier commit évite ce risque.
+
+---
+
+## Lancer la démo
+
+### docker-compose (local, dev)
+```bash
+cp .env.example .env  # compléter les valeurs
+docker-compose up
+# API disponible sur http://localhost:8000
+# Docs Swagger : http://localhost:8000/docs
+```
+
+### Kubernetes (minikube, cible S4-S5)
+Voir [k8s/README.md](k8s/README.md) pour la séquence complète :
+démarrage du cluster → déploiement des manifests → accès API, Prometheus et Grafana.

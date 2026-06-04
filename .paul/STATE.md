@@ -10,21 +10,21 @@ See: .paul/PROJECT.md (updated 2026-06-03)
 ## Current Position
 
 Milestone: v0.1 Fil Rouge (S1→S6)
-Phase: 5 of 6 (S5 — Monitoring + scan + post-mortem) — COMPLETE
-Plan: 05-01→05-04 DONE — Phase 5 terminée ; next Phase 6 (Soutenance)
-Status: Phase 5 COMPLETE (Lead Produit / Doc)
-Last activity: 2026-06-04 — Phase 5 : metrics endpoint, Prometheus instrumentation, Grafana dashboards, scan Trivy + audit dépendances, post-mortem rédigé
+Phase: 6 of 6 (S6 — Soutenance) — In Progress
+Plan: 06-01 COMPLETE — loop fermé ; next 06-02 (répétition démo) + 06-03 (slides)
+Status: Ready for next PLAN (06-02)
+Last activity: 2026-06-04 — UNIFY 06-01 : docs/architecture.md + README + k8s/README.md livrés
 
 Progress:
-- Milestone: [████████░] 83% (Phase 1 + 2 + 3 + 4 + 5 done)
-- Phase 5: [██████████] 100% (05-01 metrics + 05-02 Grafana + 05-03 security scan + 05-04 postmortem)
+- Milestone: [█████████░] 90% (Phase 1→5 done, Phase 6 en cours)
+- Phase 6: [████░░░░░░] 33% (06-01 ✓, 06-02 et 06-03 restants)
 
 ## Loop Position
 
 Current loop state:
 ```
 PLAN ──▶ APPLY ──▶ UNIFY
-  ✓        ✓        ✓     [Phase 2 terminée — prêt pour Phase 3]
+  ✓        ✓        ✓     [06-01 loop fermé — prêt pour 06-02]
 ```
 
 ## Accumulated Context
@@ -62,9 +62,9 @@ Aucune restriction — code applicatif autorisé.
 ## Session Continuity
 
 Last session: 2026-06-04
-Stopped at: Phase 4 complète (Lead Ops) — manifests k8s/ déployés et vérifiés, PR #9 ouverte vers master
-Next action: faire relire/merger PR #9, puis Phase 5 (Monitoring) → /metrics, Prometheus, Grafana (addons minikube)
-Resume context: cluster minikube profile=forum, namespace=forum. Manifests dans k8s/ (00→30). Image API chargée via `minikube image load`. Accès : port-forward svc/api ou `minikube tunnel` + forum.local. Vrai secret k8s/02-secret.yaml gitignoré.
+Stopped at: UNIFY 06-01 complet
+Next action: `/paul:plan` → Phase 6 plan 06-02 (répétition démo bout-en-bout) et 06-03 (slides soutenance)
+Resume context: docs livrées (architecture.md 132L, README TODO:, k8s/README démo). Placeholders README à compléter par l'équipe. Plans 06-02 et 06-03 restants.
 
 ---
 *STATE.md — Updated after every significant action*
