@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: forum
+  labels:
+    app: forum-frontend
+spec:
+  type: ClusterIP
+  selector:
+    app: forum-frontend
+  ports:
+    - port: 8080
+      targetPort: 8080
+      name: http

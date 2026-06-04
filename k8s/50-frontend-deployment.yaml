@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: forum
+  labels:
+    app: forum-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: forum-frontend
+  template:
+    metadata:
+      labels:
+        app: forum-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: devops-fil-rouge-template-frontend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet: { path: /, port: 8080 }
+            initialDelaySeconds: 3
+            periodSeconds: 5
