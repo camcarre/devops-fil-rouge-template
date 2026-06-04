@@ -33,3 +33,7 @@ ruvector.db
 # Secrets Kubernetes réels (jamais versionnés — seul *.example.yaml l'est)
 k8s/*-secret.yaml
 !k8s/*-secret.example.yaml
+
+# Front-end (Node)
+frontend/node_modules/
+frontend/dist/
