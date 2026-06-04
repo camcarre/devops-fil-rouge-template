@@ -104,18 +104,18 @@ démarrage du cluster → déploiement des manifests → accès API, Prometheus 
 ## CI/CD — publication des images
 
 À chaque push sur `master`, le pipeline GitHub Actions (`.github/workflows/ci.yml`)
-lint + teste + build, puis **publie les images Docker (api et frontend) sur GHCR**
-(GitHub Container Registry), taguées par le **SHA du commit** pour la traçabilité et le rollback.
+lint + teste + scanne + build, puis **publie l'image Docker de l'API sur GHCR**
+(GitHub Container Registry), taguée par le **SHA du commit** pour la traçabilité et le rollback.
 
 > Choix **GHCR** (vs Docker Hub) : intégré au dépôt et authentifié par le `GITHUB_TOKEN`
 > intégré — aucun secret à créer manuellement.
 
 La publication est **gatée** sur le lint, les tests et le scan **Trivy** de l'image API
-(`ignore-unfixed` : on ne bloque que sur les failles corrigeables). L'image frontend
-(nginx statique) n'est pas encore scannée — amélioration prévue.
+(`ignore-unfixed` : on ne bloque que sur les failles corrigeables). **Règle : on ne publie
+que ce qu'on scanne** — l'image frontend (nginx statique) n'est donc pas encore publiée,
+le temps d'ajouter son scan.
 
-Images publiées :
+Image publiée :
 ```
 ghcr.io/camcarre/devops-fil-rouge-template-api:<sha>
-ghcr.io/camcarre/devops-fil-rouge-template-frontend:<sha>
 ```

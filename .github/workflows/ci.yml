@@ -104,13 +104,13 @@ jobs:
     permissions:
       contents: read
       packages: write
+    # On ne publie QUE l'image API (la seule scannée par Trivy ci-dessus).
+    # Le frontend sera ajouté ici une fois son scan en place — jamais de publication sans scan.
     strategy:
       matrix:
         include:
           - image: api
             context: .
-          - image: frontend
-            context: ./frontend
     steps:
       - uses: actions/checkout@v4
 
