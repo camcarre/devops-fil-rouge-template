@@ -13,6 +13,11 @@
   --radius-input: 10px;
   --radius-button: 10px;
   --radius-large: 28px;
+
+  --text-caption: 14px;
+  --text-body: 16px;
+  --text-subheading: 18px;
+  --text-heading: 24px;
 }
 
 :root {
