@@ -24,3 +24,9 @@ node_modules/
 
 # Docker
 *.log
+
+# Outils locaux (ruflo / claude-flow) — ne pas versionner
+.claude-flow/
+agentdb.rvf
+agentdb.rvf.lock
+ruvector.db
