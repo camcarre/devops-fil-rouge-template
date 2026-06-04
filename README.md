@@ -50,12 +50,14 @@ Canal de communication : [Teams / Discord — à remplir]
 
 | Séance | Livrable | Statut |
 | ------ | -------- | ------ |
-| S1 | README cadrage | ☐ |
-| S2 | Dockerfile(s) + DB en container | ☐ |
-| S3 | docker-compose + CI vert | ☐ |
-| S4 | Manifests K8s appliqués | ☐ |
-| S5 | Monitoring + post-mortem | ☐ |
+| S1 | README cadrage | ✅ |
+| S2 | Dockerfile(s) + DB en container | ✅ |
+| S3 | docker-compose + CI verte | ✅ |
+| S4 | Manifests K8s appliqués | ✅ |
+| S5 | Monitoring + post-mortem | ✅ |
 | S6 | Soutenance prête | ☐ |
+
+- Post-mortem : `docs/postmortem.md`
 
 ---
 

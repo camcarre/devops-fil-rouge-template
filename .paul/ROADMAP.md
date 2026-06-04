@@ -9,7 +9,7 @@ Le projet suit les 6 séances du fil rouge (S1→S6). Chaque séance = une phase
 
 **v0.1 Fil Rouge (S1→S6)** (v0.1.0)
 Status: In progress
-Phases: 2 of 6 complete
+Phases: 5 of 6 complete
 
 ## Phases
 
@@ -21,7 +21,7 @@ Phases: 2 of 6 complete
 | 2 | S2 — Conteneurisation service + BDD | 4 | Done | 2026-06-04 |
 | 3 | S3 — docker-compose + CI verte | 4 | Done | 2026-06-04 |
 | 4 | S4 — Déploiement Kubernetes local | 4 | Done | 2026-06-04 |
-| 5 | S5 — Monitoring + scan + post-mortem | 4 | Not started | - |
+| 5 | S5 — Monitoring + scan + post-mortem | 4 | Done | 2026-06-04 |
 | 6 | S6 — Soutenance | 3 | Not started | - |
 
 ## Phase Details
@@ -118,10 +118,10 @@ Phases: 2 of 6 complete
 - Post-mortem : incidents rencontrés, choix, limites
 
 **Plans:**
-- [ ] 05-01: Exposition des métriques + scrape Prometheus
-- [ ] 05-02: Dashboards Grafana
+- [x] 05-01: Exposition des métriques + scrape Prometheus
+- [x] 05-02: Dashboards Grafana
 - [x] 05-03: Scan Trivy + audit dépendances (+ étape CI)
-- [ ] 05-04: Rédaction du post-mortem
+- [x] 05-04: Rédaction du post-mortem
 
 ### Phase 6: S6 — Soutenance
 

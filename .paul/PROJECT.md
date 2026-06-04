@@ -99,7 +99,7 @@ None yet.
 | S2 — Service + BDD conteneurisés | réseau Docker fonctionnel | - | Not started |
 | S3 — docker-compose + CI verte | pipeline vert sur chaque PR | - | Not started |
 | S4 — Déploiement K8s local | app accessible sur cluster local | - | Not started |
-| S5 — Monitoring + scan + post-mortem | dashboards + scan + doc | - | Not started |
+| S5 — Monitoring + scan + post-mortem | dashboards + scan + doc | - | Completed |
 | S6 — Soutenance | démo bout-en-bout + doc finale | - | Not started |
 
 ## Tech Stack / Tools (proposé — voir STACK.md, à valider S1)
@@ -124,4 +124,4 @@ None yet.
 
 ---
 *PROJECT.md — Updated when requirements or context change*
-*Last updated: 2026-06-03*
+*Last updated: 2026-06-04*

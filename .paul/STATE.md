@@ -5,19 +5,19 @@
 See: .paul/PROJECT.md (updated 2026-06-03)
 
 **Core value:** Maîtrise DevOps de bout en bout (code conteneurisé → K8s monitoré) sur un forum simple, reproductible via `docker-compose up`.
-**Current focus:** v0.1 Fil Rouge — Phase 4 (S4 Kubernetes local) COMPLÈTE — prêt pour Phase 5
+**Current focus:** v0.1 Fil Rouge — Phase 5 (S5 Monitoring + scan + post-mortem) COMPLETE — prêt pour Phase 6
 
 ## Current Position
 
 Milestone: v0.1 Fil Rouge (S1→S6)
-Phase: 4 of 6 (S4 — Déploiement Kubernetes local) — COMPLÈTE
-Plan: 04-01→04-04 DONE — Phase 4 terminée ; next Phase 5 (Monitoring, Lead Ops)
-Status: Phase 4 COMPLÈTE (Lead Ops) — PR #9 ouverte, en attente de revue
-Last activity: 2026-06-04 — Phase 4 : cluster minikube + namespace + StatefulSet/PVC db + Deployment/initContainer api + ingress forum.local, déployé et vérifié bout-en-bout
+Phase: 5 of 6 (S5 — Monitoring + scan + post-mortem) — COMPLETE
+Plan: 05-01→05-04 DONE — Phase 5 terminée ; next Phase 6 (Soutenance)
+Status: Phase 5 COMPLETE (Lead Produit / Doc)
+Last activity: 2026-06-04 — Phase 5 : metrics endpoint, Prometheus instrumentation, Grafana dashboards, scan Trivy + audit dépendances, post-mortem rédigé
 
 Progress:
-- Milestone: [███████░░░] 67% (Phase 1 + 2 + 3 + 4 done)
-- Phase 4: [██████████] 100% (04-01 cluster + 04-02 api + 04-03 db + 04-04 ingress)
+- Milestone: [████████░] 83% (Phase 1 + 2 + 3 + 4 + 5 done)
+- Phase 5: [██████████] 100% (05-01 metrics + 05-02 Grafana + 05-03 security scan + 05-04 postmortem)
 
 ## Loop Position
 
