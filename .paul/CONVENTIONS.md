@@ -31,30 +31,32 @@ Une branche par tâche de la roadmap, préfixe `feature/<plan>-<slug>`, toutes p
 > (`git checkout feature/xxx` → `git rebase master` après `git pull origin master`),
 > sinon elle diverge de `master`. Méthode agile stricte = brancher à la demande.
 
-| Plan | Branche |
-|------|---------|
-| 01-01 | `feature/01-01-team-setup` |
-| 01-02 | `feature/01-02-readme-cadrage` |
-| 01-03 | `feature/01-03-git-setup` |
-| 02-01 | `feature/02-01-db-schema` |
-| 02-02 | `feature/02-02-api-crud` |
-| 02-03 | `feature/02-03-dockerfile-api` |
-| 02-04 | `feature/02-04-postgres-network` |
-| 03-01 | `feature/03-01-docker-compose` |
-| 03-02 | `feature/03-02-tests` |
-| 03-03 | `feature/03-03-ci-workflow` |
-| 03-04 | `feature/03-04-ci-secrets` |
-| 04-01 | `feature/04-01-k8s-cluster` |
-| 04-02 | `feature/04-02-k8s-api` |
-| 04-03 | `feature/04-03-k8s-db` |
-| 04-04 | `feature/04-04-k8s-ingress` |
-| 05-01 | `feature/05-01-metrics-prometheus` |
-| 05-02 | `feature/05-02-grafana-dashboards` |
-| 05-03 | `feature/05-03-security-scan` |
-| 05-04 | `feature/05-04-post-mortem` |
-| 06-01 | `feature/06-01-demo-rehearsal` |
-| 06-02 | `feature/06-02-final-docs` |
-| 06-03 | `feature/06-03-soutenance-slides` |
+Chaque branche a un **rôle propriétaire** (responsable de l'avancement + ouverture de la PR). La revue est faite par **un autre membre** (cf. workflow Git).
+
+| Plan | Branche | Rôle propriétaire | Titulaire |
+|------|---------|-------------------|-----------|
+| 01-01 | `feature/01-01-team-setup` | Responsable équipe | Alvin Savi |
+| 01-02 | `feature/01-02-readme-cadrage` | Lead Produit / Doc | Cléo Doroo |
+| 01-03 | `feature/01-03-git-setup` | Responsable équipe | Alvin Savi |
+| 02-01 | `feature/02-01-db-schema` | Lead Dev | Théo Delporte |
+| 02-02 | `feature/02-02-api-crud` | Lead Dev | Théo Delporte |
+| 02-03 | `feature/02-03-dockerfile-api` | Lead Dev | Théo Delporte |
+| 02-04 | `feature/02-04-postgres-network` | Lead Ops | Baptiste Baudry |
+| 03-01 | `feature/03-01-docker-compose` | Lead Ops | Baptiste Baudry |
+| 03-02 | `feature/03-02-tests` | Lead Qualité / CI | Camille Douaud |
+| 03-03 | `feature/03-03-ci-workflow` | Lead Qualité / CI | Camille Douaud |
+| 03-04 | `feature/03-04-ci-secrets` | Lead Qualité / CI | Camille Douaud |
+| 04-01 | `feature/04-01-k8s-cluster` | Lead Ops | Baptiste Baudry |
+| 04-02 | `feature/04-02-k8s-api` | Lead Ops | Baptiste Baudry |
+| 04-03 | `feature/04-03-k8s-db` | Lead Ops | Baptiste Baudry |
+| 04-04 | `feature/04-04-k8s-ingress` | Lead Ops | Baptiste Baudry |
+| 05-01 | `feature/05-01-metrics-prometheus` | Lead Ops (+ Lead Dev pour `/metrics`) | Baptiste Baudry |
+| 05-02 | `feature/05-02-grafana-dashboards` | Lead Ops | Baptiste Baudry |
+| 05-03 | `feature/05-03-security-scan` | Lead Qualité / CI | Camille Douaud |
+| 05-04 | `feature/05-04-post-mortem` | Lead Produit / Doc | Cléo Doroo |
+| 06-01 | `feature/06-01-demo-rehearsal` | Responsable équipe | Alvin Savi |
+| 06-02 | `feature/06-02-final-docs` | Lead Produit / Doc | Cléo Doroo |
+| 06-03 | `feature/06-03-soutenance-slides` | Lead Produit / Doc (+ Responsable équipe) | Cléo Doroo |
 
 ## Convention de commits
 
@@ -98,16 +100,50 @@ Exemples : `feat: add Dockerfile for API service` · `ci: add lint and test work
 
 ## Rôles équipe
 
-| Rôle | Responsabilités | Titulaire |
-|------|-----------------|-----------|
-| Lead Dev | Code applicatif, Dockerfile du service | Théo Delporte |
-| Lead Ops | Compose, K8s, monitoring, doc déploiement | [Prénom Nom — à remplir] |
-| Lead Qualité / CI | Pipeline, tests, revue sécurité de base | [Prénom Nom — à remplir] |
-| Lead Produit / Doc | README, note d'archi, post-mortem | [Prénom Nom — à remplir] |
+| Rôle                    | Responsabilités                                   | Titulaire           |
+|-------------------------|---------------------------------------------------|---------------------|
+| **Lead Dev**            | Code applicatif, Dockerfile du service            | Théo Delporte       |
+| **Lead Ops**            | Compose,     monitoring, documentation déploiement| Baptiste Baudry     |
+| **Lead Qualité / CI**   | Pipeline, tests, revue sécurité de base           | Camille Douaud      |
+| **Lead Produit / Doc**  | README, note d'architecture, post-mortem          | Cléo Doroo          |
+| **Responsable équipe**  | Animation/coordination                            | Alvin Savi          |
 
-Canal de communication : [Teams / Discord — à remplir]
+**Canal de communication :** Teams / Discord — à préciser
 
 > Un membre peut cumuler 2 rôles dans un petit groupe — documenter qui fait quoi.
+
+### Détail des responsabilités par rôle (qui fait quoi)
+
+**Lead Dev — Théo Delporte**
+- Modèle de données + migrations (`02-01`)
+- API REST forum : auth JWT + CRUD catégories/topics/posts (`02-02`)
+- Dockerfile du service applicatif, image légère multi-stage (`02-03`)
+- Endpoint applicatif `/metrics` exposant les métriques (appui sur `05-01`)
+
+**Lead Ops — Baptiste Baudry**
+- Conteneur PostgreSQL + volume persistant + réseau Docker `api`↔`db` (`02-04`)
+- `docker-compose.yml` : services, réseau, volumes, healthchecks (`03-01`)
+- Manifests Kubernetes : cluster local, `api`, `db`+PVC, Ingress/accès (`04-01`→`04-04`)
+- Monitoring : scrape Prometheus + dashboards Grafana (`05-01`, `05-02`)
+- Documentation de déploiement
+
+**Lead Qualité / CI — Camille Douaud**
+- Tests automatisés unitaires + smoke API (`03-02`)
+- Pipeline GitHub Actions lint+test+build, vert sur PR vers base (`03-03`)
+- Gestion des secrets CI via GitHub Secrets + maj `.env.example` (`03-04`)
+- Revue sécurité : scan image Trivy + audit dépendances (`05-03`)
+
+**Lead Produit / Doc — Cléo Doroo**
+- README cadrage Note 3 : sujet, rôles, 3 objectifs (`01-02`)
+- Post-mortem : incidents, choix, limites (`05-04`)
+- Doc finale + note d'architecture consolidée (`06-02`)
+- Contribution aux slides de soutenance (`06-03`)
+
+**Responsable équipe — Alvin Savi**
+- Constitution équipe, répartition des rôles, canal de communication (`01-01`)
+- Dépôt Git privé, protection `master`, invitations, `.gitignore`/`.env.example`, premier commit (`01-03`)
+- Animation/coordination, suivi de l'avancement cross-phase
+- Répétition de la démo bout-en-bout (`06-01`) + slides/prise de parole (`06-03`)
 
 ## Structure de projet (cible, indicative)
 
@@ -130,4 +166,4 @@ Canal de communication : [Teams / Discord — à remplir]
 - Un test qui passe ≠ feature OK — vérifier le comportement réel (API/UI) si pertinent.
 
 ---
-*Last updated: 2026-06-03*
+*Last updated: 2026-06-04*
