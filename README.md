@@ -110,6 +110,10 @@ lint + teste + build, puis **publie les images Docker (api et frontend) sur GHCR
 > Choix **GHCR** (vs Docker Hub) : intégré au dépôt et authentifié par le `GITHUB_TOKEN`
 > intégré — aucun secret à créer manuellement.
 
+La publication est **gatée** sur le lint, les tests et le scan **Trivy** de l'image API
+(`ignore-unfixed` : on ne bloque que sur les failles corrigeables). L'image frontend
+(nginx statique) n'est pas encore scannée — amélioration prévue.
+
 Images publiées :
 ```
 ghcr.io/camcarre/devops-fil-rouge-template-api:<sha>
