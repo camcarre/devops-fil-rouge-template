@@ -1,0 +1,70 @@
+# Base de données PostgreSQL en StatefulSet.
+# StatefulSet (et non Deployment) car la DB a une identité et un stockage STABLES :
+# le PVC créé via volumeClaimTemplates est ré-attaché au même pod à chaque redémarrage
+# → la persistance survit aux redéploiements (boundary dure de l'ARCHITECTURE).
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: db
+  namespace: forum
+  labels:
+    app: forum-db
+spec:
+  serviceName: db
+  replicas: 1
+  selector:
+    matchLabels:
+      app: forum-db
+  template:
+    metadata:
+      labels:
+        app: forum-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16-alpine
+          ports:
+            - containerPort: 5432
+              name: postgres
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: forum-config
+                  key: POSTGRES_USER
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: forum-config
+                  key: POSTGRES_DB
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: forum-secret
+                  key: POSTGRES_PASSWORD
+            # subPath plus bas évite l'erreur "data directory not empty" (lost+found)
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          volumeMounts:
+            - name: pgdata
+              mountPath: /var/lib/postgresql/data
+          readinessProbe:
+            exec:
+              command: ["sh", "-c", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"]
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+          livenessProbe:
+            exec:
+              command: ["sh", "-c", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"]
+            initialDelaySeconds: 20
+            periodSeconds: 10
+  # Le PVC : équivalent K8s du volume Docker. Le stockage persiste indépendamment du pod.
+  volumeClaimTemplates:
+    - metadata:
+        name: pgdata
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 1Gi

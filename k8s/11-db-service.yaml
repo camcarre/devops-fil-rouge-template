@@ -1,0 +1,18 @@
+# Service headless (clusterIP: None) pour la base.
+# Donne un nom DNS stable "db" dans le namespace → l'API se connecte à db:5432.
+# Headless = adapté à un StatefulSet (résolution directe vers le pod).
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+  namespace: forum
+  labels:
+    app: forum-db
+spec:
+  clusterIP: None
+  selector:
+    app: forum-db
+  ports:
+    - port: 5432
+      targetPort: 5432
+      name: postgres
