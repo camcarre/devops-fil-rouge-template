@@ -48,18 +48,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
       - name: Build ${{ matrix.image }} image
         run: docker build -t scan-${{ matrix.image }}:latest ${{ matrix.context }}
 
-      - name: Install Trivy
-        run: |
-          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin v0.44.0
-
-      - name: Scan ${{ matrix.image }} image
-        run: trivy image --exit-code 1 --severity HIGH,CRITICAL scan-${{ matrix.image }}:latest
+      - name: Scan ${{ matrix.image }} image (Trivy)
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: scan-${{ matrix.image }}:latest
+          severity: HIGH,CRITICAL
+          exit-code: "1"
+          ignore-unfixed: true
 
   integration:
     name: Build + smoke compose (secrets)
