@@ -1,7 +1,7 @@
 from time import time
 
 from fastapi import FastAPI, Request, Response
-from prometheus_client import Counter, Histogram, CONTENT_TYPE_LATEST, REGISTRY, generate_latest
+from prometheus_client import CONTENT_TYPE_LATEST, REGISTRY, Counter, Histogram, generate_latest
 
 from src.routers import auth, categories, posts, topics
 
