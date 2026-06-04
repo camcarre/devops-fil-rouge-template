@@ -1,0 +1,8 @@
+line-length = 100
+
+[lint]
+select = ["E", "F", "I"]
+
+[lint.per-file-ignores]
+# conftest doit définir les variables d'env avant d'importer l'application.
+"tests/conftest.py" = ["E402"]
