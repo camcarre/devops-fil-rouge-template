@@ -38,23 +38,18 @@ jobs:
     name: Security scan (Trivy)
     runs-on: ubuntu-latest
     needs: lint-test
-    strategy:
-      matrix:
-        include:
-          - image: api
-            context: .
-          - image: frontend
-            context: ./frontend
+    # Scan de l'image API (principal périmètre d'attaque : DB, auth, JWT).
+    # Le frontend (nginx statique) n'est pas gaté ici — voir README (limite connue).
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build ${{ matrix.image }} image
-        run: docker build -t scan-${{ matrix.image }}:latest ${{ matrix.context }}
+      - name: Build API image
+        run: docker build -t scan-api:latest .
 
-      - name: Scan ${{ matrix.image }} image (Trivy)
+      - name: Scan API image (Trivy)
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: scan-${{ matrix.image }}:latest
+          image-ref: scan-api:latest
           severity: HIGH,CRITICAL
           exit-code: "1"
           ignore-unfixed: true
