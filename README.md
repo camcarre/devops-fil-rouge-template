@@ -1,23 +1,14 @@
-# Gabarit README — Projet fil rouge DevOps
+# Forum DevOps Fil Rouge
 
-> Copiez ce contenu dans le `README.md` à la racine du **dépôt Git de votre groupe**.  
-> Complétez chaque section — champs vides = Note 3 incomplète.
-
----
-
-# [Nom du projet]
-
-**Équipe :** Prénom Nom, Prénom Nom, …  
-**Groupe / promo :** …  
-**Dépôt :** https://github.com/... ou GitLab
+**Équipe :** Théo Delporte, [Prénom Nom], [Prénom Nom], [Prénom Nom]
+**Groupe / promo :** B3 — [Promo — à remplir]
+**Dépôt :** https://github.com/[organisation]/devops-fil-rouge-[equipe]
 
 ---
 
 ## Description du sujet
 
-En 3–5 phrases : que fait l'application ? Qui est l'utilisateur cible ?
-
-<!-- Zone d'effort : ne pas copier un exemple fourni par l'intervenant -->
+Application web de forum de discussion organisée en catégories, sujets et messages. Les utilisateurs peuvent s'inscrire, se connecter, créer des sujets dans une catégorie et y poster des messages. L'application expose une API REST avec persistance PostgreSQL. Le vrai livrable du projet est la chaîne DevOps construite autour : conteneurisation, orchestration, CI/CD, monitoring et sécurité.
 
 ---
 
@@ -25,10 +16,10 @@ En 3–5 phrases : que fait l'application ? Qui est l'utilisateur cible ?
 
 | Composant | Choix | Justification (1 phrase) |
 | --------- | ----- | -------------------------- |
-| Backend / API | ex. Node, Python, Go | |
-| Base de données | ex. PostgreSQL, MongoDB | |
-| Front (optionnel) | ex. React, aucun | |
-| Orchestration cible | Compose puis K8s | |
+| Backend / API | Python 3.12 + FastAPI | Framework async léger adapté à une API CRUD, typage fort et documentation OpenAPI automatique. |
+| Base de données | PostgreSQL 16 | Modèle relationnel adapté à la hiérarchie catégories → topics → posts, conteneurisable et robuste. |
+| Front (optionnel) | Templates server-side (Jinja2) | Le front n'est pas le focus du module ; rendu serveur minimal sans dépendance JS lourde. |
+| Orchestration cible | Docker Compose (S3) puis Kubernetes local (S4) | Progression naturelle : stack locale d'abord, industrialisation K8s ensuite. |
 
 ---
 
@@ -36,25 +27,27 @@ En 3–5 phrases : que fait l'application ? Qui est l'utilisateur cible ?
 
 | Membre | Rôle | Responsabilité principale |
 | ------ | ---- | ------------------------- |
-| | Lead Dev | |
-| | Lead Ops | |
-| | Lead Qualité / CI | |
-| | Lead Doc / Produit | |
+| Théo Delporte | Lead Dev | Code applicatif, modèles SQLAlchemy, API FastAPI, Dockerfile |
+| [Prénom Nom] | Lead Ops | docker-compose, manifests Kubernetes, monitoring, doc déploiement |
+| [Prénom Nom] | Lead Qualité / CI | Pipeline GitHub Actions, tests automatisés, scan sécurité |
+| [Prénom Nom] | Lead Produit / Doc | README, note d'architecture, post-mortem |
+
+Canal de communication : [Teams / Discord — à remplir]
 
 ---
 
-## Objectifs du fil rouge (3 minimum)
+## Objectifs du fil rouge
 
-1. Ex. : Avoir une API conteneurisée avec healthcheck d'ici S3.
-2. Ex. : Pipeline CI qui build et push l'image sur chaque merge `main`.
-3. Ex. : Déployer sur cluster kind avec 2 replicas d'ici S4.
+1. Avoir l'API forum conteneurisée avec healthcheck fonctionnel et accessible via `docker-compose up` d'ici S3.
+2. Mettre en place un pipeline CI GitHub Actions qui build, teste et valide l'image sur chaque PR vers master d'ici S3.
+3. Déployer l'application sur un cluster Kubernetes local (kind) avec persistance PostgreSQL via PVC d'ici S4.
 
 ---
 
 ## Jalons — état d'avancement
 
-| Séance | Livrable | Statut (à cocher) |
-| ------ | -------- | ----------------- |
+| Séance | Livrable | Statut |
+| ------ | -------- | ------ |
 | S1 | README cadrage | ☐ |
 | S2 | Dockerfile(s) + DB en container | ☐ |
 | S3 | docker-compose + CI vert | ☐ |
@@ -68,17 +61,20 @@ En 3–5 phrases : que fait l'application ? Qui est l'utilisateur cible ?
 
 ```bash
 # À documenter progressivement — pas besoin de tout remplir en S1
-git clone ...
+git clone https://github.com/[organisation]/devops-fil-rouge-[equipe]
+cd devops-fil-rouge-[equipe]
+cp .env.example .env
+# Remplir les valeurs dans .env
 ```
 
 ---
 
 ## Communication d'équipe
 
-Canal utilisé (Teams, Discord, …) :
+Canal utilisé : [Teams / Discord — à remplir]
 
 ---
 
-## Participation S1 (optionnel, 2 lignes)
+## Participation S1
 
-Retour sur le jeu de rôle ou le cas déploiement : une leçon retenue pour le projet.
+Jeu de rôle déploiement : leçon retenue — un secret commité dans Git est considéré compromis et doit être révoqué immédiatement, même si l'historique est nettoyé ensuite. La règle `.env` dans `.gitignore` dès le premier commit évite ce risque.
