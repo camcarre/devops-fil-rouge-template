@@ -120,7 +120,7 @@ Phases: 2 of 6 complete
 **Plans:**
 - [ ] 05-01: Exposition des métriques + scrape Prometheus
 - [ ] 05-02: Dashboards Grafana
-- [ ] 05-03: Scan Trivy + audit dépendances (+ étape CI)
+- [x] 05-03: Scan Trivy + audit dépendances (+ étape CI)
 - [ ] 05-04: Rédaction du post-mortem
 
 ### Phase 6: S6 — Soutenance
