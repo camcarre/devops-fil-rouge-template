@@ -5,26 +5,26 @@
 See: .paul/PROJECT.md (updated 2026-06-03)
 
 **Core value:** Maîtrise DevOps de bout en bout (code conteneurisé → K8s monitoré) sur un forum simple, reproductible via `docker-compose up`.
-**Current focus:** v0.1 Fil Rouge — Phase 1 (S1 Cadrage & Setup Git)
+**Current focus:** v0.1 Fil Rouge — Phase 2 (S2 Conteneurisation)
 
 ## Current Position
 
 Milestone: v0.1 Fil Rouge (S1→S6)
-Phase: 1 of 6 (S1 — Cadrage & Setup Git)
-Plan: None yet (à créer via /paul:plan)
-Status: Ready to plan
-Last activity: 2026-06-03 — Projet initialisé (.paul/ créé depuis les consignes du cadrage)
+Phase: 2 of 6 (S2 — Conteneurisation service + BDD)
+Plan: 02-02 DONE — prêt pour 02-03 (Dockerfile)
+Status: Ready to plan 02-03
+Last activity: 2026-06-04 — API FastAPI complète (auth JWT + CRUD forum)
 
 Progress:
-- Milestone: [░░░░░░░░░░] 0%
-- Phase: [░░░░░░░░░░] 0%
+- Milestone: [██░░░░░░░░] 17% (Phase 1 done, Phase 2 en cours 50%)
+- Phase 2: [█████░░░░░] 50% (02-01 + 02-02 done)
 
 ## Loop Position
 
 Current loop state:
 ```
 PLAN ──▶ APPLY ──▶ UNIFY
-  ○        ○        ○     [Ready for first PLAN — Phase 1]
+  ✓        ✓        ✓     [Loop 02-02 fermé — prêt pour PLAN 02-03]
 ```
 
 ## Accumulated Context
@@ -54,10 +54,10 @@ Pour ce projet, écriture limitée à `.paul/` (aucun code applicatif généré,
 
 ## Session Continuity
 
-Last session: 2026-06-03
-Stopped at: Initialisation PAUL terminée (PROJECT/ROADMAP/STATE/paul.json + cohesion docs)
-Next action: Lancer `/paul:plan` pour détailler la Phase 1 (S1) et créer le premier PLAN
-Resume context: Consignes dans cadrage-projet-fil-rouge.pdf + guide-git-travail-groupe.pdf. Roadmap = 6 séances. Sujet = forum.
+Last session: 2026-06-04
+Stopped at: 02-02 UNIFY complet — API FastAPI livrée sur feature/02-02-api-crud
+Next action: `/paul:plan` pour 02-03 (Dockerfile du service) sur feature/02-03-dockerfile-api
+Resume context: src/main.py entry point = `uvicorn src.main:app`. requirements.txt présent. Pas de secret hardcodé.
 
 ---
 *STATE.md — Updated after every significant action*
