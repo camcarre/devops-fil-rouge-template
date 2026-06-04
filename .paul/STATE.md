@@ -58,9 +58,9 @@ Aucune restriction — code applicatif autorisé.
 ## Session Continuity
 
 Last session: 2026-06-04
-Stopped at: Phase 2 complète — 02-04 UNIFY sur feature/02-04-postgres-network
-Next action: Merger feature/02-04 → master puis démarrer Phase 3 (03-01 docker-compose de référence)
-Resume context: `docker-compose up` validé. Image forum-api. Réseau forum-network. DB postgres:16-alpine. Migrations auto alembic.
+Stopped at: Phase 2 complète mergée sur master — Lead Dev a terminé son périmètre
+Next action: Lead CI/CD → `/paul:plan` Phase 3 sur feature/03-01-docker-compose
+Resume context: `docker-compose up` validé localement. Image=forum-api, réseau=forum-network, DB=postgres:16-alpine. Migrations auto (alembic upgrade head). Secrets via .env → pattern GitHub Secrets pour la CI.
 
 ---
 *STATE.md — Updated after every significant action*

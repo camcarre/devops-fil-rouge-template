@@ -7,9 +7,9 @@
     "status": "in_progress"
   },
   "phase": {
-    "number": 2,
-    "name": "S2 - Conteneurisation service + BDD",
-    "status": "in_progress"
+    "number": 3,
+    "name": "S3 - docker-compose + CI verte",
+    "status": "not_started"
   },
   "loop": {
     "plan": null,
