@@ -32,7 +32,7 @@ Application web de forum de discussion organisée en catégories, sujets et mess
 | Théo Delporte | Lead Dev | Code applicatif, modèles SQLAlchemy, API FastAPI, Dockerfile |
 | [Prénom Nom] | Lead Ops | docker-compose, manifests Kubernetes, monitoring, doc déploiement |
 | [Prénom Nom] | Lead Qualité / CI | Pipeline GitHub Actions, tests automatisés, scan sécurité |
-| [Prénom Nom] | Lead Produit / Doc | README, note d'architecture, post-mortem |
+| Cléo Deroo | Lead Produit / Doc | README, note d'architecture, post-mortem |
 
 Canal de communication : [Teams / Discord — à remplir]
 
