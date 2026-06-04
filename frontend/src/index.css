@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink-black: #0d0d0d;
+  --color-paper: #f9f9f9;
+  --color-snow: #ffffff;
+  --color-smoke: #5d5d5d;
+  --color-ash: #8f8f8f;
+  --color-fog: #ececec;
+
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+
+  --radius-input: 10px;
+  --radius-button: 10px;
+  --radius-large: 28px;
+
+  --text-caption: 14px;
+  --text-body: 16px;
+  --text-subheading: 18px;
+  --text-heading: 24px;
+}
+
+:root {
+  font-feature-settings: "liga" 0;
+  color: var(--color-ink-black);
+  background: var(--color-snow);
+}
+
+body { margin: 0; font-family: var(--font-sans); }
