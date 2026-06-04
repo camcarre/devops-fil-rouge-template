@@ -7,9 +7,9 @@
     "status": "in_progress"
   },
   "phase": {
-    "number": 3,
-    "name": "S3 - docker-compose + CI verte",
-    "status": "not_started"
+    "number": 4,
+    "name": "S4 - Déploiement Kubernetes local",
+    "status": "done"
   },
   "loop": {
     "plan": null,

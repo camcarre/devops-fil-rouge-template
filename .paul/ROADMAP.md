@@ -20,7 +20,7 @@ Phases: 2 of 6 complete
 | 1 | S1 — Cadrage & Setup Git | 3 | Done | 2026-06-03 |
 | 2 | S2 — Conteneurisation service + BDD | 4 | Done | 2026-06-04 |
 | 3 | S3 — docker-compose + CI verte | 4 | Done | 2026-06-04 |
-| 4 | S4 — Déploiement Kubernetes local | 4 | Not started | - |
+| 4 | S4 — Déploiement Kubernetes local | 4 | Done | 2026-06-04 |
 | 5 | S5 — Monitoring + scan + post-mortem | 4 | Not started | - |
 | 6 | S6 — Soutenance | 3 | Not started | - |
 
@@ -99,10 +99,10 @@ Phases: 2 of 6 complete
 - Doc de déploiement (Lead Ops)
 
 **Plans:**
-- [ ] 04-01: Cluster local (kind/minikube) + namespace dédié
-- [ ] 04-02: Manifests `api` (Deployment + Service + ConfigMap + Secret)
-- [ ] 04-03: Manifests `db` (StatefulSet/Deployment + PVC)
-- [ ] 04-04: Ingress / accès local + doc de déploiement
+- [x] 04-01: Cluster local (kind/minikube) + namespace dédié
+- [x] 04-02: Manifests `api` (Deployment + Service + ConfigMap + Secret)
+- [x] 04-03: Manifests `db` (StatefulSet/Deployment + PVC)
+- [x] 04-04: Ingress / accès local + doc de déploiement
 
 ### Phase 5: S5 — Monitoring + scan + post-mortem
 
