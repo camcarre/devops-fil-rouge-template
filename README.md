@@ -98,3 +98,20 @@ docker-compose up
 ### Kubernetes (minikube, cible S4-S5)
 Voir [k8s/README.md](k8s/README.md) pour la séquence complète :
 démarrage du cluster → déploiement des manifests → accès API, Prometheus et Grafana.
+
+---
+
+## CI/CD — publication des images
+
+À chaque push sur `master`, le pipeline GitHub Actions (`.github/workflows/ci.yml`)
+lint + teste + build, puis **publie les images Docker (api et frontend) sur GHCR**
+(GitHub Container Registry), taguées par le **SHA du commit** pour la traçabilité et le rollback.
+
+> Choix **GHCR** (vs Docker Hub) : intégré au dépôt et authentifié par le `GITHUB_TOKEN`
+> intégré — aucun secret à créer manuellement.
+
+Images publiées :
+```
+ghcr.io/camcarre/devops-fil-rouge-template-api:<sha>
+ghcr.io/camcarre/devops-fil-rouge-template-frontend:<sha>
+```
