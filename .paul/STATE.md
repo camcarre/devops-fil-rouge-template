@@ -5,26 +5,26 @@
 See: .paul/PROJECT.md (updated 2026-06-03)
 
 **Core value:** Maîtrise DevOps de bout en bout (code conteneurisé → K8s monitoré) sur un forum simple, reproductible via `docker-compose up`.
-**Current focus:** v0.1 Fil Rouge — Phase 1 (S1 Cadrage & Setup Git)
+**Current focus:** v0.1 Fil Rouge — Phase 3 (S3 docker-compose + CI verte)
 
 ## Current Position
 
 Milestone: v0.1 Fil Rouge (S1→S6)
-Phase: 1 of 6 (S1 — Cadrage & Setup Git)
-Plan: None yet (à créer via /paul:plan)
-Status: Ready to plan
-Last activity: 2026-06-03 — Projet initialisé (.paul/ créé depuis les consignes du cadrage)
+Phase: 3 of 6 (S3 — docker-compose + CI verte)
+Plan: Phase 2 COMPLÈTE — prêt pour Phase 3
+Status: Ready to plan 03-01
+Last activity: 2026-06-04 — Phase 2 terminée : docker-compose up fonctionnel, api↔db validé
 
 Progress:
-- Milestone: [░░░░░░░░░░] 0%
-- Phase: [░░░░░░░░░░] 0%
+- Milestone: [████░░░░░░] 33% (Phase 1 + 2 done)
+- Phase 3: [░░░░░░░░░░] 0%
 
 ## Loop Position
 
 Current loop state:
 ```
 PLAN ──▶ APPLY ──▶ UNIFY
-  ○        ○        ○     [Ready for first PLAN — Phase 1]
+  ✓        ✓        ✓     [Phase 2 terminée — prêt pour Phase 3]
 ```
 
 ## Accumulated Context
@@ -33,31 +33,34 @@ PLAN ──▶ APPLY ──▶ UNIFY
 
 | Decision | Phase | Impact |
 |----------|-------|--------|
-| Forum comme sujet (API + DB) | S1 | Cadre les features minimales — à valider intervenant |
+| Forum comme sujet (API + DB) | S1 | Cadre les features minimales |
 | Monolithe + PostgreSQL | S1 | Architecture de référence pour toutes les phases |
-| Pas de temps réel ni OAuth | S1 | Garde le périmètre dans les « à éviter » du cadrage |
+| Pas de temps réel ni OAuth | S1 | Périmètre minimal intentionnel |
+| Stack Python FastAPI | S2 | Entry point = `uvicorn src.main:app` |
+| PYTHONPATH=/app dans Dockerfile | S2 | uvicorn ne met pas WORKDIR dans sys.path auto |
+| Image name = forum-api | S2 | Référence pour docker-compose et CI |
+| bcrypt direct (sans passlib) | S2 | Incompatibilité passlib 1.7.4 + bcrypt 5.x |
+| alembic upgrade head dans CMD api | S2 | Migrations auto au démarrage, sans intervention |
+| Réseau = forum-network, DNS interne = db | S2 | DATABASE_URL utilise `db` comme hostname |
 
 ### Deferred Issues
 
-None yet.
+None.
 
 ### Blockers/Concerns
 
-| Blocker | Impact | Resolution Path |
-|---------|--------|-----------------|
-| Go/no-go intervenant sur le sujet forum | Phase 1 ne peut se clôturer sans validation | Pitch ~2 min en S1 |
-| Choix stack backend (Node vs Python) non figé | Bloque Phase 2 (Dockerfile) | Décider en fin S1 — voir STACK.md |
+None.
 
 ## Boundaries (Active)
 
-Pour ce projet, écriture limitée à `.paul/` (aucun code applicatif généré, aucun push) tant que l'utilisateur ne le demande pas.
+Aucune restriction — code applicatif autorisé.
 
 ## Session Continuity
 
-Last session: 2026-06-03
-Stopped at: Initialisation PAUL terminée (PROJECT/ROADMAP/STATE/paul.json + cohesion docs)
-Next action: Lancer `/paul:plan` pour détailler la Phase 1 (S1) et créer le premier PLAN
-Resume context: Consignes dans cadrage-projet-fil-rouge.pdf + guide-git-travail-groupe.pdf. Roadmap = 6 séances. Sujet = forum.
+Last session: 2026-06-04
+Stopped at: Phase 2 complète — 02-04 UNIFY sur feature/02-04-postgres-network
+Next action: Merger feature/02-04 → master puis démarrer Phase 3 (03-01 docker-compose de référence)
+Resume context: `docker-compose up` validé. Image forum-api. Réseau forum-network. DB postgres:16-alpine. Migrations auto alembic.
 
 ---
 *STATE.md — Updated after every significant action*

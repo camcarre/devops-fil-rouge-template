@@ -9,7 +9,7 @@ Le projet suit les 6 séances du fil rouge (S1→S6). Chaque séance = une phase
 
 **v0.1 Fil Rouge (S1→S6)** (v0.1.0)
 Status: In progress
-Phases: 0 of 6 complete
+Phases: 2 of 6 complete
 
 ## Phases
 
@@ -17,8 +17,8 @@ Phases: 0 of 6 complete
 
 | Phase | Name | Plans | Status | Completed |
 |-------|------|-------|--------|-----------|
-| 1 | S1 — Cadrage & Setup Git | 3 | In progress | - |
-| 2 | S2 — Conteneurisation service + BDD | 4 | Not started | - |
+| 1 | S1 — Cadrage & Setup Git | 3 | Done | 2026-06-03 |
+| 2 | S2 — Conteneurisation service + BDD | 4 | Done | 2026-06-04 |
 | 3 | S3 — docker-compose + CI verte | 4 | Not started | - |
 | 4 | S4 — Déploiement Kubernetes local | 4 | Not started | - |
 | 5 | S5 — Monitoring + scan + post-mortem | 4 | Not started | - |
@@ -42,9 +42,9 @@ Phases: 0 of 6 complete
 - Répondre au QCM culture (fin S1 ou <48 h)
 
 **Plans:**
-- [ ] 01-01: Constituer l'équipe, répartir les 4 rôles, ouvrir le canal de communication
-- [ ] 01-02: Rédiger le README cadrage (sujet forum + 3 objectifs fil rouge + justifications stack 1 phrase)
-- [ ] 01-03: Initialiser le dépôt Git (privé, `main` protégée, `.gitignore`, `.env.example`, premier commit)
+- [x] 01-01: Constituer l'équipe, répartir les 4 rôles, ouvrir le canal de communication
+- [x] 01-02: Rédiger le README cadrage (sujet forum + 3 objectifs fil rouge + justifications stack 1 phrase)
+- [x] 01-03: Initialiser le dépôt Git (privé, `main` protégée, `.gitignore`, `.env.example`, premier commit)
 
 ### Phase 2: S2 — Conteneurisation service + BDD
 
@@ -61,10 +61,10 @@ Phases: 0 of 6 complete
 - Réseau Docker reliant `api` ↔ `db`
 
 **Plans:**
-- [ ] 02-01: Schéma DB + migrations (users, categories, topics, posts)
-- [ ] 02-02: API CRUD catégories / topics / posts + auth simple
-- [ ] 02-03: Dockerfile du service + build de l'image
-- [ ] 02-04: Conteneur PostgreSQL + réseau Docker + smoke test api↔db
+- [x] 02-01: Schéma DB + migrations (users, categories, topics, posts)
+- [x] 02-02: API CRUD catégories / topics / posts + auth simple
+- [x] 02-03: Dockerfile du service + build de l'image
+- [x] 02-04: Conteneur PostgreSQL + réseau Docker + smoke test api↔db
 
 ### Phase 3: S3 — docker-compose + CI verte
 
