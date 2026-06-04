@@ -11,8 +11,8 @@ See: .paul/PROJECT.md (updated 2026-06-03)
 
 Milestone: v0.1 Fil Rouge (S1→S6)
 Phase: 2 of 6 (S2 — Conteneurisation service + BDD)
-Plan: 02-03 DONE — prêt pour 02-04 (PostgreSQL + réseau Docker)
-Status: Ready to plan 02-04
+Plan: 02-04 créé, en attente d'exécution
+Status: PLAN créé, prêt pour APPLY
 Last activity: 2026-06-04 — Dockerfile multi-stage buildé et validé (/health OK)
 
 Progress:
@@ -24,7 +24,7 @@ Progress:
 Current loop state:
 ```
 PLAN ──▶ APPLY ──▶ UNIFY
-  ✓        ✓        ✓     [Loop 02-03 fermé — prêt pour PLAN 02-04]
+  ✓        ○        ○     [Plan 02-04 créé, prêt pour APPLY]
 ```
 
 ## Accumulated Context
