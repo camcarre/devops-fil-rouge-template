@@ -82,7 +82,7 @@ Phases: 2 of 6 complete
 **Plans:**
 - [ ] 03-01: `docker-compose.yml` (api + db, env, volumes, healthchecks)
 - [x] 03-02: Tests automatisés (unit + smoke API)
-- [ ] 03-03: Workflow `.github/workflows/ci.yml` (lint + test + build) vert
+- [x] 03-03: Workflow `.github/workflows/ci.yml` (lint + test + build) vert
 - [ ] 03-04: Configurer GitHub Secrets + mettre `.env.example` à jour
 
 ### Phase 4: S4 — Déploiement Kubernetes local

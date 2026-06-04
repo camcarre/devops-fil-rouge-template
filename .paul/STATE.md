@@ -11,13 +11,13 @@ See: .paul/PROJECT.md (updated 2026-06-03)
 
 Milestone: v0.1 Fil Rouge (S1→S6)
 Phase: 3 of 6 (S3 — docker-compose + CI verte)
-Plan: 03-02 tests DONE (17 passed) — next 03-03 CI workflow
+Plan: 03-03 CI workflow DONE (ruff+pytest+build, badge README) — next 03-04 GitHub Secrets
 Status: Phase 3 en cours (Lead Qualité/CI)
-Last activity: 2026-06-04 — 03-02 : suite pytest (health + auth + CRUD forum), 17/17 PASS sur SQLite in-memory
+Last activity: 2026-06-04 — 03-03 : .github/workflows/ci.yml (lint+test+build), ruff All passed + 17 tests PASS en local
 
 Progress:
 - Milestone: [████░░░░░░] 33% (Phase 1 + 2 done)
-- Phase 3: [███░░░░░░░] 25% (03-02 done ; 03-01 compose livré en S2)
+- Phase 3: [██████░░░░] 75% (03-01 compose + 03-02 tests + 03-03 CI ; reste 03-04 secrets)
 
 ## Loop Position
 

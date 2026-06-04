@@ -1,5 +1,7 @@
 # Forum DevOps Fil Rouge
 
+[![CI](https://github.com/camcarre/devops-fil-rouge-template/actions/workflows/ci.yml/badge.svg)](https://github.com/camcarre/devops-fil-rouge-template/actions/workflows/ci.yml)
+
 **Équipe :** Théo Delporte, [Prénom Nom], [Prénom Nom], [Prénom Nom]
 **Groupe / promo :** B3 — [Promo — à remplir]
 **Dépôt :** https://github.com/[organisation]/devops-fil-rouge-[equipe]
