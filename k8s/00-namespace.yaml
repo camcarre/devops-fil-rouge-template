@@ -1,0 +1,9 @@
+# Namespace dédié à l'application forum.
+# Isole toutes les ressources K8s du projet (api, db, config, secrets)
+# du reste du cluster — facilite la lecture, le nettoyage et les quotas.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: forum
+  labels:
+    app.kubernetes.io/part-of: forum-devops-fil-rouge
