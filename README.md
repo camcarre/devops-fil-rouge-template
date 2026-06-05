@@ -2,9 +2,9 @@
 
 [![CI](https://github.com/camcarre/devops-fil-rouge-template/actions/workflows/ci.yml/badge.svg)](https://github.com/camcarre/devops-fil-rouge-template/actions/workflows/ci.yml)
 
-**Équipe :** Théo Delporte, TODO: [Prénom Nom], TODO: [Prénom Nom], TODO: [Prénom Nom]
-**Groupe / promo :** B3 — TODO: [Promo]
-**Dépôt :** https://github.com/camcarre/devops-fil-rouge-[equipe]
+**Équipe :** Alvin Savi, Théo Delporte, Baptiste Baudry, Camille, Cléo Deroo
+**Groupe / promo :** Bachelor 3 — Informatique (Gestion du SI)
+**Dépôt :** https://github.com/camcarre/devops-fil-rouge-template
 
 ---
 
@@ -20,7 +20,7 @@ Application web de forum de discussion organisée en catégories, sujets et mess
 | --------- | ----- | -------------------------- |
 | Backend / API | Python 3.12 + FastAPI | Framework async léger adapté à une API CRUD, typage fort et documentation OpenAPI automatique. |
 | Base de données | PostgreSQL 16 | Modèle relationnel adapté à la hiérarchie catégories → topics → posts, conteneurisable et robuste. |
-| Front (optionnel) | Templates server-side (Jinja2) | Le front n'est pas le focus du module ; rendu serveur minimal sans dépendance JS lourde. |
+| Front | React (Vite) servi par nginx | Interface de forum légère ; nginx sert les fichiers statiques et fait reverse-proxy `/api` (évite le CORS). |
 | Orchestration cible | Docker Compose (S3) puis Kubernetes local (S4) | Progression naturelle : stack locale d'abord, industrialisation K8s ensuite. |
 
 ---
@@ -29,12 +29,13 @@ Application web de forum de discussion organisée en catégories, sujets et mess
 
 | Membre | Rôle | Responsabilité principale |
 | ------ | ---- | ------------------------- |
+| Alvin Savi | Chef d'équipe | Coordination, planning, répartition des tâches |
 | Théo Delporte | Lead Dev | Code applicatif, modèles SQLAlchemy, API FastAPI, Dockerfile |
-| TODO: [Prénom Nom] | Lead Ops | docker-compose, manifests Kubernetes, monitoring, doc déploiement |
-| TODO: [Prénom Nom] | Lead Qualité / CI | Pipeline GitHub Actions, tests automatisés, scan sécurité |
+| Baptiste Baudry | Lead Ops | docker-compose, déploiement, publication des images (GHCR), doc d'exploitation |
+| Camille | Lead Qualité / CI | Pipeline GitHub Actions, tests automatisés, scan sécurité |
 | Cléo Deroo | Lead Produit / Doc | README, note d'architecture, post-mortem |
 
-Canal de communication : TODO: [Teams/Discord]
+Canal de communication : Microsoft Teams
 
 ---
 
@@ -42,7 +43,7 @@ Canal de communication : TODO: [Teams/Discord]
 
 1. Avoir l'API forum conteneurisée avec healthcheck fonctionnel et accessible via `docker-compose up` d'ici S3.
 2. Mettre en place un pipeline CI GitHub Actions qui build, teste et valide l'image sur chaque PR vers master d'ici S3.
-3. Déployer l'application sur un cluster Kubernetes local (kind) avec persistance PostgreSQL via PVC d'ici S4.
+3. Déployer l'application sur un cluster Kubernetes local (minikube) avec persistance PostgreSQL via PVC d'ici S4.
 
 ---
 
@@ -65,8 +66,8 @@ Canal de communication : TODO: [Teams/Discord]
 ## Démarrage local
 
 ```bash
-git clone https://github.com/camcarre/devops-fil-rouge-[equipe]
-cd devops-fil-rouge-[equipe]
+git clone https://github.com/camcarre/devops-fil-rouge-template
+cd devops-fil-rouge-template
 cp .env.example .env
 # Remplir les valeurs dans .env
 ```
@@ -75,7 +76,7 @@ cp .env.example .env
 
 ## Communication d'équipe
 
-Canal utilisé : TODO: [Teams/Discord]
+Canal utilisé : Microsoft Teams
 
 ---
 
