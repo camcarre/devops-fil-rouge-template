@@ -7,7 +7,6 @@ __pycache__
 *.pyo
 .venv
 venv
-.paul
 docs
 README.md
 *.md

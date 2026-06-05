@@ -19,7 +19,7 @@ La Phase 5 du fil rouge vise à compléter l’application forum par une observa
 - `k8s/40-grafana-datasource.yaml` à `k8s/44-grafana-ingress.yaml` : manifests Grafana et dashboard
 - `k8s/README.md` : documentation d’accès Grafana et déploiement K8s
 - `.github/workflows/ci.yml` : job `security-scan` Trivy + étape `pip-audit`
-- `.paul/ROADMAP.md`, `.paul/PROJECT.md`, `.paul/STATE.md`, `README.md` : mise à jour de l’état du projet
+- `README.md` : mise à jour de l’état du projet
 
 ## Incidents et apprentissages
 
@@ -67,7 +67,4 @@ La Phase 5 du fil rouge vise à compléter l’application forum par une observa
 - `k8s/43-grafana-service.yaml`
 - `k8s/44-grafana-ingress.yaml`
 - `.github/workflows/ci.yml`
-- `.paul/ROADMAP.md`
-- `.paul/PROJECT.md`
-- `.paul/STATE.md`
 - `README.md`

@@ -1,7 +1,7 @@
 # Architecture — Forum DevOps Fil Rouge
 
 > Ce document décrit l'architecture applicative et d'infrastructure du projet fil rouge DevOps.
-> Source de vérité : `.paul/ARCHITECTURE.md`. Mis à jour pour la soutenance S6.
+> Mis à jour pour la soutenance S6.
 
 ---
 
@@ -129,4 +129,4 @@ Le manifest `k8s/02-secret.yaml` contient les valeurs réelles (passwords) et n'
 
 ---
 
-*Document mis à jour pour la soutenance S6. Cohérent avec `.paul/ARCHITECTURE.md`, `.paul/STACK.md` et `docs/postmortem.md`.*
+*Document mis à jour pour la soutenance S6. Cohérent avec `docs/postmortem.md`.*
