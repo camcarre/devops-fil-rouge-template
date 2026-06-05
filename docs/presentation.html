@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forum DevOps — Soutenance</title>
+<style>
+  :root{
+    --ink:#161616; --muted:#6b6b6b; --line:#dcdcdc; --bg:#ffffff;
+    --soft:#f5f5f5; --accent:#1f5fbf; --accent-soft:#eef3fb;
+    --green:#1a7f37; --green-bg:#e9f6ee; --red:#b3382c; --red-bg:#fbeeec;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{height:100%; background:#1c1c1c; font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif; color:var(--ink); overflow:hidden;}
+
+  #stage{position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:100vw; height:56.25vw; max-height:100vh; max-width:177.78vh;
+    background:var(--bg); box-shadow:0 0 70px rgba(0,0,0,.55); container-type:size;
+    transition:max-height .2s, max-width .2s, top .2s;}
+  body.notes-on #stage{ top:34vh; max-height:68vh; max-width:120.9vh; }
+
+  .slide{position:absolute; inset:0; padding:8.5cqw 8cqw 6cqw; display:none;
+    flex-direction:column; justify-content:flex-start; font-size:3cqw; line-height:1.45;}
+  .slide.active{display:flex; animation:fade .3s ease;}
+  .slide .notes{display:none;}
+  @keyframes fade{from{opacity:0;} to{opacity:1;}}
+
+  /* title / section slides centered */
+  .slide.mid{align-items:center; text-align:center; justify-content:center;}
+
+  .kicker{font-size:2.2cqw; color:var(--muted); text-transform:uppercase; letter-spacing:.26em; margin-bottom:2.5cqw;}
+  h1{font-size:7.5cqw; line-height:1; letter-spacing:-.03em;}
+  .title-sub{font-size:3.2cqw; color:var(--muted); margin-top:3cqw; line-height:1.4;}
+  .title-names{font-size:2.5cqw; color:var(--ink); margin-top:5cqw; letter-spacing:.02em;}
+  .brandmark{width:11cqw; margin-bottom:3.5cqw;}
+  .brandmark svg{width:100%; height:auto; display:block;}
+  .accent-rule{width:9cqw; height:.5cqw; background:var(--accent); border-radius:2px; margin:2.5cqw 0;}
+
+  h2{font-size:4.6cqw; line-height:1.08; letter-spacing:-.02em; margin-bottom:3cqw;
+     padding-bottom:1.4cqw; border-bottom:.35cqw solid var(--ink); display:inline-block;}
+  .num{color:var(--accent); font-weight:800; margin-right:1.2cqw;}
+
+  ul.b{list-style:none;}
+  ul.b li{font-size:3.1cqw; margin:1.8cqw 0; padding-left:3.4cqw; position:relative; line-height:1.35;}
+  ul.b li::before{content:""; position:absolute; left:0; top:1.3cqw; width:1.4cqw; height:1.4cqw; background:var(--accent); border-radius:2px;}
+  ul.b li b{font-weight:700;}
+  .sub{color:var(--muted); font-size:2.6cqw;}
+
+  code{background:var(--soft); border:1px solid var(--line); border-radius:.5cqw; padding:.05em .4em; font-family:"SF Mono",Menlo,Consolas,monospace; font-size:.8em;}
+  .lead{font-size:4cqw; font-weight:600; line-height:1.25; max-width:90%;}
+  .accent{color:var(--accent);}
+
+  svg{display:block; width:100%; height:auto;}
+  .cap{font-size:2.6cqw; color:var(--muted); margin-top:3cqw; text-align:center; align-self:center; max-width:92%;}
+
+  /* sober comparison boxes (no emoji, colour-coded) */
+  .compare{display:flex; gap:3cqw; align-items:stretch; margin-top:1cqw;}
+  .box{flex:1; border-radius:1.6cqw; padding:3cqw; border:1px solid var(--line); background:var(--soft);}
+  .box .lab{font-size:2.2cqw; text-transform:uppercase; letter-spacing:.12em; color:var(--muted);}
+  .box .v{font-size:3.4cqw; font-weight:700; margin-top:1cqw; line-height:1.2;}
+  .box.bad{background:var(--red-bg); border-color:#e7c4bf;} .box.bad .lab{color:var(--red);}
+  .box.good{background:var(--green-bg); border-color:#bfe3cb;} .box.good .lab{color:var(--green);}
+  .arrow{display:flex; align-items:center; font-size:4cqw; color:var(--muted);}
+
+  .pair{display:flex; gap:3cqw; margin-top:1cqw;}
+  .pair .col{flex:1; background:var(--soft); border:1px solid var(--line); border-radius:1.4cqw; padding:2.4cqw 2.6cqw;}
+  .pair .col h3{font-size:2.7cqw; margin-bottom:1.2cqw;}
+  .pair .col ul{list-style:none;} .pair .col li{font-size:2.5cqw; margin:.9cqw 0; padding-left:2.6cqw; position:relative;}
+  .pair .col li::before{content:"–"; position:absolute; left:0; color:var(--accent);}
+
+  table{border-collapse:collapse; width:100%; font-size:2.2cqw; margin-top:.5cqw;}
+  td,th{border:1px solid var(--line); padding:.75cqw 1.4cqw; text-align:left;}
+  td:nth-child(2){white-space:nowrap;}
+  th{background:var(--soft); font-weight:700;}
+  tr.me td{background:var(--accent-soft); font-weight:700;}
+
+  /* fenêtre de code */
+  .codewin{width:80cqw; align-self:center; border-radius:1.2cqw; overflow:hidden;
+    box-shadow:0 1.2cqw 3.5cqw rgba(0,0,0,.28); border:1px solid #333; margin-top:1cqw;}
+  .codewin .bar{background:#2c2c2e; display:flex; align-items:center; padding:1.1cqw 1.6cqw;}
+  .codewin .dot{width:1.3cqw; height:1.3cqw; border-radius:50%; margin-right:.8cqw;}
+  .codewin .fname{color:#aaa; font-family:"SF Mono",Menlo,monospace; font-size:1.8cqw; margin-left:1.2cqw;}
+  .codewin .code1{background:#1e1e1e; padding:1.6cqw 0; text-align:left;
+    font-family:"SF Mono",Menlo,Consolas,monospace; font-size:1.5cqw; line-height:1.62; color:#d4d4d4;}
+  .codewin .ln{display:block; padding:0 2.4cqw; white-space:pre;}
+  .codewin .hl{background:rgba(36,150,237,.16); box-shadow:inset .35cqw 0 0 var(--accent);}
+  .codewin .k{color:#7fb0e8;} .codewin .c{color:#6fae6f;}
+  .code-cap{font-size:2cqw; color:var(--muted); margin-top:2cqw; align-self:center; text-align:center;}
+
+  /* chrome */
+  #bar{position:fixed; top:0; left:0; height:6px; background:var(--accent); z-index:30; transition:width .3s;}
+  #counter{position:fixed; bottom:12px; right:16px; color:#aaa; font-size:13px; z-index:30; font-family:monospace;}
+  #hint{position:fixed; bottom:12px; left:16px; color:#999; font-size:12px; z-index:30;}
+  .nav{position:fixed; top:0; bottom:0; width:11%; z-index:25; cursor:pointer;}
+  #prev{left:0;} #next{right:0;}
+  .sec{position:absolute; top:3.4cqw; left:8cqw; font-size:2cqw; color:#aaa; letter-spacing:.04em;}
+  .time{position:absolute; top:3.4cqw; right:8cqw; font-size:2cqw; color:#aaa;}
+
+  #notes{position:fixed; left:0; right:0; bottom:0; height:32vh; overflow:auto;
+    background:#161616; color:#e8e8e8; padding:16px 26px 18px; z-index:28;
+    border-top:4px solid var(--accent); box-shadow:0 -12px 34px rgba(0,0,0,.45); font-size:17px; line-height:1.6;}
+  body:not(.notes-on) #notes{display:none;}
+  #notes .nt{font-size:11px; text-transform:uppercase; letter-spacing:.22em; color:#888; margin-bottom:6px;}
+  #notes b{color:#7fb0f0; font-weight:700;}
+  #notes .say{color:#fff;}
+  @media print{ #bar,#counter,#hint,.nav,#notes{display:none;} }
+</style>
+</head>
+<body class="notes-on">
+<div id="bar"></div>
+<div id="counter"></div>
+<div id="hint">← → naviguer · N notes · F plein écran</div>
+<div class="nav" id="prev"></div>
+<div class="nav" id="next"></div>
+
+<div id="stage">
+
+  <!-- 1 — TITRE -->
+  <section class="slide mid active">
+    <div class="brandmark"><svg fill="#2496ED" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Docker</title><path d="M13.983 11.078h2.119a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.119a.185.185 0 00-.185.185v1.888c0 .102.083.185.185.185m-2.954-5.43h2.118a.186.186 0 00.186-.186V3.574a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.185m0 2.716h2.118a.187.187 0 00.186-.186V6.29a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.887c0 .102.082.185.185.186m-2.93 0h2.12a.186.186 0 00.184-.186V6.29a.185.185 0 00-.185-.185H8.1a.185.185 0 00-.185.185v1.887c0 .102.083.185.185.186m-2.964 0h2.119a.186.186 0 00.185-.186V6.29a.185.185 0 00-.185-.185H5.136a.186.186 0 00-.186.185v1.887c0 .102.084.185.186.186m5.893 2.715h2.118a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.118a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.185m-2.93 0h2.12a.185.185 0 00.184-.185V9.006a.185.185 0 00-.184-.186h-2.12a.185.185 0 00-.184.185v1.888c0 .102.083.185.185.185m-2.964 0h2.119a.185.185 0 00.185-.185V9.006a.185.185 0 00-.184-.186h-2.12a.186.186 0 00-.186.186v1.887c0 .102.084.185.186.185m-2.92 0h2.12a.185.185 0 00.184-.185V9.006a.185.185 0 00-.184-.186h-2.12a.185.185 0 00-.184.185v1.888c0 .102.082.185.185.185M23.763 9.89c-.065-.051-.672-.51-1.954-.51-.338.001-.676.03-1.01.087-.248-1.7-1.653-2.53-1.716-2.566l-.344-.199-.226.327c-.284.438-.49.922-.612 1.43-.23.97-.09 1.882.403 2.661-.595.332-1.55.413-1.744.42H.751a.751.751 0 00-.75.748 11.376 11.376 0 00.692 4.062c.545 1.428 1.355 2.48 2.41 3.124 1.18.723 3.1 1.137 5.275 1.137.983.003 1.963-.086 2.93-.266a12.248 12.248 0 003.823-1.389c.98-.567 1.86-1.288 2.61-2.136 1.252-1.418 1.998-2.997 2.553-4.4h.221c1.372 0 2.215-.549 2.68-1.009.309-.293.55-.65.707-1.046l.098-.288Z"/></svg></div>
+    <div class="kicker">Bachelor 3 · Module DevOps</div>
+    <h1>Forum DevOps</h1>
+    <div class="title-sub">Application conteneurisée<br>et chaîne de livraison automatisée</div>
+    <div class="title-names">Alvin Savi · Théo Delporte · Baptiste Baudry · Camille · Cléo Deroo</div>
+    <aside class="notes"><b>Accroche :</b> <span class="say">« On vous présente notre projet de fil rouge : une application de forum, et surtout la chaîne automatisée qui la construit, la teste et la met en ligne. »</span> Donner les 4 noms et le rôle de chacun en une phrase. Annoncer le plan : contexte, architecture, conteneurs, pipeline, démo, puis notre démarche.</aside>
+  </section>
+
+  <!-- 2 — CONTEXTE -->
+  <section class="slide">
+    <span class="sec">Contexte</span>
+    <h2><span class="num">1</span>Contexte et objectif</h2>
+    <ul class="b">
+      <li>Une application de <b>forum</b> : créer des sujets, poster des messages</li>
+      <li>Le vrai travail : la <b>chaîne automatisée</b> autour — développer, construire, livrer, exécuter</li>
+      <li>À livrer : application en <b>conteneurs</b>, <b>lancement reproductible</b>, <b>pipeline automatique</b>, <b>aucun secret dans le code</b></li>
+    </ul>
+    <aside class="notes"><b>Ce qu'on a fait :</b> <span class="say">une application de forum, API plus base de données.</span> <b>Pourquoi un sujet aussi simple :</b> pour que l'application ne prenne pas toute la place — l'objectif du module, c'est la démarche DevOps autour, pas le forum lui-même. Le cap qu'on s'est fixé dès le départ : pouvoir tout relancer à l'identique, et ne rien livrer sans test automatique.</aside>
+  </section>
+
+  <!-- 3 — EQUIPE -->
+  <section class="slide">
+    <span class="sec">Organisation</span>
+    <h2><span class="num">2</span>Équipe et organisation</h2>
+    <table>
+      <tr><th>Membre</th><th>Rôle</th><th>Responsabilité</th></tr>
+      <tr><td>Alvin Savi</td><td>Chef d'équipe</td><td>Coordination, répartition des tâches</td></tr>
+      <tr><td>Théo Delporte</td><td>Lead Dev</td><td>Code de l'API, conteneurs</td></tr>
+      <tr><td>Baptiste Baudry</td><td>Lead Ops</td><td>Orchestration, déploiement, images</td></tr>
+      <tr><td>Camille</td><td>Lead Qualité</td><td>Pipeline, tests, sécurité</td></tr>
+      <tr><td>Cléo Deroo</td><td>Lead Doc</td><td>Documentation, note d'architecture</td></tr>
+    </table>
+    <aside class="notes"><b>Ce qu'on a mis en place :</b> <span class="say">un chef d'équipe qui coordonne et répartit, et un travail par branches avec relecture (pull request) avant d'intégrer sur la branche principale.</span> <b>Pourquoi :</b> personne ne pousse seul dans son coin, on se relit, et la connaissance est partagée. Exemple concret à donner : quand le pipeline s'est cassé, ce n'est pas resté bloqué côté Qualité — l'Ops a pu lire et corriger, parce qu'on documente et qu'on se relit. Résultat : pas de dépendance à une seule personne.</aside>
+  </section>
+
+  <!-- 4 — ARCHITECTURE -->
+  <section class="slide">
+    <span class="sec">Architecture</span><span class="time">conteneurisation</span>
+    <h2><span class="num">3</span>Architecture de l'application</h2>
+    <svg viewBox="0 0 640 200" font-family="-apple-system,Helvetica,Arial" font-size="11">
+      <rect x="6" y="6" width="628" height="160" rx="10" fill="none" stroke="#ccc" stroke-dasharray="5 4"/>
+      <text x="18" y="24" fill="#999" font-size="10">réseau interne (les services se parlent entre eux)</text>
+      <rect x="20" y="62" width="96" height="54" rx="8" fill="#f5f5f5" stroke="#161616"/>
+      <text x="68" y="86" text-anchor="middle">Utilisateur</text><text x="68" y="102" text-anchor="middle" font-size="9" fill="#777">navigateur</text>
+      <rect x="172" y="54" width="118" height="76" rx="8" fill="#fff" stroke="#161616" stroke-width="1.5"/>
+      <text x="231" y="82" text-anchor="middle" font-weight="700">Front</text><text x="231" y="100" text-anchor="middle" font-size="9" fill="#777">interface web</text>
+      <rect x="346" y="54" width="118" height="76" rx="8" fill="#fff" stroke="#161616" stroke-width="1.5"/>
+      <text x="405" y="82" text-anchor="middle" font-weight="700">API</text><text x="405" y="100" text-anchor="middle" font-size="9" fill="#777">logique métier</text>
+      <rect x="520" y="54" width="96" height="76" rx="8" fill="#f5f5f5" stroke="#161616" stroke-width="1.5"/>
+      <text x="568" y="82" text-anchor="middle" font-weight="700">Base</text><text x="568" y="100" text-anchor="middle" font-size="9" fill="#777">données</text>
+      <ellipse cx="568" cy="144" rx="26" ry="6" fill="#f5f5f5" stroke="#999"/><path d="M542 144 v10 a26 6 0 0 0 52 0 v-10" fill="none" stroke="#999"/>
+      <text x="568" y="176" text-anchor="middle" font-size="8.5" fill="#777">stockage conservé</text>
+      <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#161616"/></marker></defs>
+      <line x1="116" y1="90" x2="170" y2="90" stroke="#161616" marker-end="url(#a)"/>
+      <line x1="290" y1="90" x2="344" y2="90" stroke="#161616" marker-end="url(#a)"/>
+      <line x1="464" y1="90" x2="518" y2="90" stroke="#161616" marker-end="url(#a)"/>
+    </svg>
+    <p class="cap">Trois services séparés · la base de données reste <b>interne</b>, jamais exposée à l'extérieur</p>
+    <aside class="notes"><b>Ce qu'on a fait :</b> <span class="say">on a découpé l'application en trois services séparés — l'interface, l'API et la base de données — qui communiquent sur un réseau privé.</span> <b>Pourquoi séparer plutôt qu'un seul bloc :</b> chaque partie peut être mise à jour ou remplacée sans toucher aux autres, et surtout on a choisi de <b>ne jamais exposer la base de données à l'extérieur</b> — seule l'interface est accessible. Le stockage est conservé même si on redémarre les services.</aside>
+  </section>
+
+  <!-- 5 — CONTENEURISATION -->
+  <section class="slide">
+    <span class="sec">Conteneurisation</span><span class="time">30 %</span>
+    <h2><span class="num">4</span>Mise en conteneurs</h2>
+    <ul class="b">
+      <li>Chaque partie est <b>empaquetée avec tout ce qu'il lui faut</b> pour fonctionner</li>
+      <li>Construction <b>en deux temps</b> : on prépare, puis on ne garde que le strict nécessaire</li>
+      <li>Résultat : une image <b>plus légère et plus sûre</b> (moins de composants = moins de failles)</li>
+    </ul>
+    <aside class="notes"><b>Ce qu'on a fait :</b> <span class="say">des fichiers de construction (Dockerfile) en deux étapes : une étape prépare les dépendances, l'autre ne garde que l'application finale.</span> <b>Pourquoi :</b> sans ça, l'image finale traînerait tous les outils de préparation → lourde et plus de failles possibles. On part d'une <b>image Python officielle et allégée</b> (la version « slim », qu'on a préférée à « alpine » qui complique l'installation). <b>Limite qu'on assume :</b> nos conteneurs tournent encore avec les droits administrateur — c'est notre première piste d'amélioration.</aside>
+  </section>
+
+  <!-- 6 — ORCHESTRATION -->
+  <section class="slide">
+    <span class="sec">Orchestration</span><span class="time">30 %</span>
+    <h2><span class="num">5</span>Lancer tout en une commande</h2>
+    <ul class="b">
+      <li>Un <b>seul fichier</b> décrit les trois services et la façon dont ils se connectent</li>
+      <li>L'API <b>attend que la base soit prête</b> avant de démarrer</li>
+      <li>La base se <b>met à jour automatiquement</b> au démarrage, sans intervention</li>
+    </ul>
+    <aside class="notes"><b>Ce qu'on a fait :</b> <span class="say">un fichier (docker-compose) qui décrit nos trois services et les lance ensemble. Une seule commande, <code>docker compose up</code>, démarre tout.</span> <b>Pourquoi :</b> n'importe qui dans l'équipe relance l'application complète sans rien installer à la main. On a réglé deux points qui posaient problème : l'API ne démarre qu'une fois la base prête (sinon elle plantait), et les mises à jour de la base s'appliquent toutes seules au démarrage.</aside>
+  </section>
+
+  <!-- 6b — EXTRAIT DE CODE -->
+  <section class="slide">
+    <span class="sec">Orchestration — l'essentiel du docker-compose</span>
+    <div class="codewin">
+      <div class="bar"><span class="dot" style="background:#ff5f56"></span><span class="dot" style="background:#ffbd2e"></span><span class="dot" style="background:#27c93f"></span><span class="fname">docker-compose.yml</span></div>
+      <div class="code1"><span class="ln"><span class="k">services:</span></span><span class="ln">  <span class="k">db:</span>                               <span class="c"># base de données</span></span><span class="ln">    image: postgres:16-alpine</span><span class="ln">    volumes: [ postgres-data ]      <span class="c"># données conservées</span></span><span class="ln hl">    healthcheck: [ pg_isready ]     <span class="c"># la base prête ?</span></span><span class="ln">  <span class="k">api:</span>                              <span class="c"># notre application</span></span><span class="ln">    depends_on:</span><span class="ln hl">      db: { condition: service_healthy }   <span class="c"># attend la base</span></span><span class="ln">    environment:</span><span class="ln hl">      DATABASE_URL: ${POSTGRES_PASSWORD}   <span class="c"># secret via .env</span></span><span class="ln">  <span class="k">frontend:</span>                         <span class="c"># interface web</span></span><span class="ln">    depends_on: [ api ]             <span class="c"># démarre après l'API</span></span></div>
+    </div>
+    <p class="code-cap">Extrait des 3 services · les lignes <b>surlignées</b> = démarrage ordonné &amp; secrets hors du code</p>
+    <aside class="notes"><b>Ne pas lire ligne par ligne — pointer 3 endroits :</b> <span class="say">1) <code>healthcheck</code> + <code>depends_on: service_healthy</code> : l'API attend que la base soit prête avant de démarrer. 2) le <code>volume</code> <code>postgres-data</code> : les données restent même si on supprime le conteneur. 3) le <code>DATABASE_URL</code> vient d'une variable (<code>.env</code>), jamais écrit dans le fichier.</span> Préciser : « c'est un extrait — le fichier complet est dans le dépôt ; ici je montre les 3 services et les lignes qui comptent. »</aside>
+  </section>
+
+  <!-- 7 — PIPELINE -->
+  <section class="slide">
+    <span class="sec">Intégration & livraison continues</span><span class="time">30 %</span>
+    <h2><span class="num">6</span>La chaîne automatique</h2>
+    <svg viewBox="0 0 640 92" font-family="-apple-system,Helvetica,Arial" font-size="10.5">
+      <defs><marker id="b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#161616"/></marker></defs>
+      <g text-anchor="middle">
+        <rect x="6" y="28" width="100" height="44" rx="7" fill="#f5f5f5" stroke="#161616"/><text x="56" y="48">envoi du code</text><text x="56" y="62" font-size="8" fill="#777">déclencheur</text>
+        <rect x="128" y="28" width="92" height="44" rx="7" fill="#fff" stroke="#161616"/><text x="174" y="48">vérification</text><text x="174" y="62" font-size="8" fill="#777">+ tests</text>
+        <rect x="242" y="28" width="92" height="44" rx="7" fill="#fff" stroke="#161616"/><text x="288" y="48">sécurité</text><text x="288" y="62" font-size="8" fill="#777">analyse</text>
+        <rect x="356" y="28" width="92" height="44" rx="7" fill="#fff" stroke="#161616"/><text x="402" y="48">construction</text><text x="402" y="62" font-size="8" fill="#777">de l'image</text>
+        <rect x="470" y="28" width="112" height="44" rx="7" fill="#161616"/><text x="526" y="48" fill="#fff">publication</text><text x="526" y="62" font-size="8" fill="#bbb">image versionnée</text>
+        <line x1="106" y1="50" x2="126" y2="50" stroke="#161616" marker-end="url(#b)"/>
+        <line x1="220" y1="50" x2="240" y2="50" stroke="#161616" marker-end="url(#b)"/>
+        <line x1="334" y1="50" x2="354" y2="50" stroke="#161616" marker-end="url(#b)"/>
+        <line x1="448" y1="50" x2="468" y2="50" stroke="#161616" marker-end="url(#b)"/>
+      </g>
+      <text x="294" y="14" text-anchor="middle" font-size="9" fill="#999">si une étape échoue, la chaîne s'arrête et rien n'est publié</text>
+    </svg>
+    <p class="cap">À chaque envoi de code, tout s'enchaîne automatiquement · règle : <b>on ne publie que ce qui a été contrôlé</b></p>
+    <aside class="notes"><b>Ce qu'on a fait :</b> <span class="say">un pipeline (GitHub Actions) qui se déclenche à chaque envoi de code sur la branche principale.</span> <b>Pourquoi chaque étape :</b> vérification du code et tests (s'assurer que ça marche), analyse de sécurité, construction de l'image, puis publication. La règle qu'on s'est fixée : on ne publie que ce qu'on a contrôlé. L'image est rangée sur le registre de GitHub (GHCR — choisi plutôt que Docker Hub car déjà intégré, rien à configurer), identifiée par sa version pour pouvoir revenir en arrière.</aside>
+  </section>
+
+  <!-- 8 — SECURITE -->
+  <section class="slide">
+    <span class="sec">Sécurité</span>
+    <h2><span class="num">7</span>Sécurité</h2>
+    <ul class="b">
+      <li><b>Aucun mot de passe dans le code</b> : les informations sensibles sont dans des fichiers séparés, gardés hors du dépôt</li>
+      <li>Les images et les dépendances sont <b>analysées automatiquement</b> à chaque envoi</li>
+      <li><b>11 vulnérabilités connues corrigées</b> en mettant les dépendances à jour</li>
+    </ul>
+    <aside class="notes"><b>Ce qu'on a fait :</b> <span class="say">aucun secret n'est écrit dans le code. En local, ils sont dans un fichier ignoré par Git ; dans le pipeline, ils viennent du coffre de GitHub (GitHub Secrets), et la publication utilise un jeton fourni automatiquement.</span> <b>Pourquoi :</b> un secret commité, même dans un dépôt privé, est considéré compromis. On a aussi branché deux analyses automatiques (Trivy pour les images, pip-audit pour les dépendances) — c'est ce qui nous a permis de repérer et corriger 11 vulnérabilités.</aside>
+  </section>
+
+  <!-- 9 — DEMO 1 -->
+  <section class="slide">
+    <span class="sec">Démonstration</span><span class="time">déploiement</span>
+    <h2><span class="num">8</span>Démonstration — déploiement</h2>
+    <ul class="b">
+      <li>Une commande lance toute l'application</li>
+      <li>L'API répond (vérification de bonne santé)</li>
+      <li>La documentation de l'API est générée automatiquement</li>
+      <li>Le forum s'affiche dans le navigateur</li>
+    </ul>
+    <aside class="notes"><b>Faire la démo, pas seulement la décrire :</b> 1) lancer <code>docker compose up</code> (ou déjà lancé). 2) montrer que les trois services tournent et sont « en bonne santé ». 3) ouvrir l'adresse de vérification (<code>/health</code>). 4) ouvrir la documentation (<code>/docs</code>), créer un compte, se connecter. 5) montrer le forum. <span class="say">Insister : « l'API n'a démarré qu'une fois la base prête, c'est automatique. »</span> Prévoir des captures en secours si le réseau lâche.</aside>
+  </section>
+
+  <!-- 10 — DEMO 2 -->
+  <section class="slide">
+    <span class="sec">Démonstration</span><span class="time">chaîne automatique</span>
+    <h2><span class="num">9</span>Démonstration — la chaîne</h2>
+    <div class="pair">
+      <div class="col"><h3>La chaîne au vert</h3><ul><li>vérification, tests, sécurité, construction, publication</li><li>tout est passé sur le projet</li></ul></div>
+      <div class="col"><h3>L'image publiée</h3><ul><li>rangée sur le registre GitHub</li><li>identifiée par sa version</li></ul></div>
+    </div>
+    <aside class="notes"><b>Montrer l'écran GitHub :</b> 1) onglet « Actions » → le dernier passage tout au vert (chaque étape cochée). 2) onglet « Packages » → l'image publiée, avec son numéro de version. <span class="say">Dire : « l'image est publiée automatiquement, identifiée par la version exacte du code, donc on sait toujours ce qui tourne et on peut revenir en arrière. »</span> Rappeler : aucun mot de passe n'a été nécessaire dans le code, tout passe par le coffre de GitHub.</aside>
+  </section>
+
+  <!-- 11 — INCIDENT -->
+  <section class="slide">
+    <span class="sec">Retour d'expérience</span><span class="time">point fort</span>
+    <h2><span class="num">10</span>Un incident résolu</h2>
+    <div class="compare">
+      <div class="box bad"><div class="lab">Au départ</div><div class="v">La chaîne semblait fonctionner, mais elle était en fait bloquée</div></div>
+      <div class="arrow">→</div>
+      <div class="box good"><div class="lab">Après</div><div class="v">Repérée et corrigée à partir des messages d'erreur</div></div>
+    </div>
+    <p class="cap">L'erreur a été vue par la chaîne <b>avant</b> qu'un utilisateur ne la rencontre</p>
+    <aside class="notes"><b>L'histoire à raconter (très valorisée par le jury) :</b> <span class="say">« Notre chaîne était annoncée comme fonctionnelle, mais en réalité une dépendance n'existait pas et bloquait tout. On a vu l'échec, lu les messages d'erreur, corrigé, et relancé : tout est repassé au vert. Au passage, on a mis les dépendances à jour et corrigé 11 vulnérabilités. »</span> La conclusion à appuyer : l'intérêt de l'automatisation, c'est que l'erreur est attrapée par la machine, pas par un utilisateur en production.</aside>
+  </section>
+
+  <!-- 12 — DEMARCHE -->
+  <section class="slide">
+    <span class="sec">Démarche</span><span class="time">posture DevOps</span>
+    <h2><span class="num">11</span>Notre démarche</h2>
+    <div class="pair">
+      <div class="col"><h3>Ce qu'on gagne</h3><ul><li>Reproductible : identique sur tous les postes</li><li>Automatisé : moins d'erreurs humaines</li><li>Tracé : on sait quelle version tourne</li></ul></div>
+      <div class="col"><h3>Limites et pistes</h3><ul><li>Conteneurs avec droits administrateur</li><li>Interface pas encore analysée</li><li>Mise en cache du pipeline</li></ul></div>
+    </div>
+    <aside class="notes"><b>Relier nos choix à un objectif (et pas à une liste d'outils) :</b> <span class="say">« On n'a pas empilé des outils pour le plaisir — chaque brique sert à livrer souvent, sans casser, et à réparer vite. »</span> Le lien concret : le pipeline et le registre nous laissent livrer quand on veut ; les tests et l'analyse réduisent les erreurs ; les images versionnées permettent de revenir en arrière. Et côté équipe, la relecture et la documentation font que personne n'est indispensable. Assumer les limites montre qu'on est lucides.</aside>
+  </section>
+
+  <!-- 13 — CONCLUSION -->
+  <section class="slide mid">
+    <h1 style="font-size:6cqw">Merci</h1>
+    <div class="lead" style="margin-top:3cqw; color:var(--muted)">Vos questions</div>
+    <div class="title-names" style="margin-top:5cqw; color:var(--muted); font-size:2.1cqw">github.com/camcarre/devops-fil-rouge-template</div>
+    <aside class="notes"><b>Préparer les questions probables (à répartir dans l'équipe) :</b> <span class="say">« Pourquoi cette base d'image ? »</span> → officielle, légère, à jour côté sécurité. <span class="say">« Compromis entre rapidité et sécurité ? »</span> → on accepte un pipeline un peu plus long pour ne jamais publier sans contrôle. <span class="say">« Un service ne démarre pas, comment vous faites ? »</span> → on lit les journaux, on vérifie l'état des services, on teste la base. <span class="say">« Et si l'Ops est absent ? »</span> → tout est documenté et relu, donc reprenable par un autre. Chaque membre répond sur sa partie.</aside>
+  </section>
+
+</div>
+
+<div id="notes"><div class="nt">Notes orateur — touche N pour masquer</div><div id="notes-body"></div></div>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  let i = 0;
+  const bar = document.getElementById('bar');
+  const counter = document.getElementById('counter');
+  const notesBody = document.getElementById('notes-body');
+  function show(n){
+    i = Math.max(0, Math.min(slides.length-1, n));
+    slides.forEach((s,k)=>s.classList.toggle('active', k===i));
+    bar.style.width = (i/(slides.length-1)*100) + '%';
+    counter.textContent = (i+1) + ' / ' + slides.length;
+    const note = slides[i].querySelector('.notes');
+    notesBody.innerHTML = note ? note.innerHTML : '<i style="color:#777">—</i>';
+  }
+  function next(){ show(i+1); } function prev(){ show(i-1); }
+  document.addEventListener('keydown', e=>{
+    const k = e.key.toLowerCase();
+    if(['arrowright','pagedown',' '].includes(k)){ e.preventDefault(); next(); }
+    else if(['arrowleft','pageup'].includes(k)){ e.preventDefault(); prev(); }
+    else if(e.key==='Home'){ show(0); } else if(e.key==='End'){ show(slides.length-1); }
+    else if(k==='n'){ document.body.classList.toggle('notes-on'); }
+    else if(k==='f'){ if(!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen(); }
+  });
+  document.getElementById('next').addEventListener('click', next);
+  document.getElementById('prev').addEventListener('click', prev);
+  const start = parseInt((location.hash||'').replace('#','')) || 1;
+  show(start-1);
+</script>
+</body>
+</html>
