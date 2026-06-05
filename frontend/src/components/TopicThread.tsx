@@ -9,6 +9,12 @@ function time(iso: string): string {
   return isNaN(d.getTime()) ? "" : d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
 }
 
+// Un message dont le contenu est une URL/chemin d'image est affiché comme image.
+function imageSrc(content: string): string | null {
+  const s = content.trim()
+  return /^(https?:\/\/|\/)\S+\.(png|jpe?g|gif|webp)$/i.test(s) ? s : null
+}
+
 export function TopicThread({ topic }: { topic: Topic }) {
   const [posts, setPosts] = useState<Post[]>([])
   const [draft, setDraft] = useState("")
@@ -29,26 +35,35 @@ export function TopicThread({ topic }: { topic: Topic }) {
   }
 
   return (
-    <div className="mx-auto flex h-screen max-w-2xl flex-col px-6 py-6">
+    <div className="mx-auto flex h-screen max-w-4xl flex-col px-6 py-6">
       <h1 className="mb-4 border-b border-fog pb-3 text-center text-subheading text-ink-black">{topic.title}</h1>
 
       <div className="flex-1 space-y-1 overflow-y-auto px-1">
         {posts.map((p) => {
           const own = me != null && p.user_id === me
+          const src = imageSrc(p.content)
           return (
             <div key={p.id} className={own ? "flex flex-col items-end" : "flex flex-col items-start"}>
               <div className={own ? "flex flex-row-reverse items-end gap-2" : "flex flex-row items-end gap-2"}>
                 <UserAvatar userId={p.user_id} />
-                <div
-                  className={
-                    "max-w-[78%] whitespace-pre-wrap break-words px-3.5 py-2 text-body " +
-                    (own
-                      ? "rounded-[18px] rounded-br-[5px] bg-[#007AFF] text-white"
-                      : "rounded-[18px] rounded-bl-[5px] bg-[#e9e9eb] text-ink-black")
-                  }
-                >
-                  {p.content}
-                </div>
+                {src ? (
+                  <img
+                    src={src}
+                    alt="image partagée"
+                    className="max-h-[300px] max-w-[70%] rounded-[18px] border border-fog object-cover"
+                  />
+                ) : (
+                  <div
+                    className={
+                      "max-w-[78%] whitespace-pre-wrap break-words px-3.5 py-2 text-body " +
+                      (own
+                        ? "rounded-[18px] rounded-br-[5px] bg-[#007AFF] text-white"
+                        : "rounded-[18px] rounded-bl-[5px] bg-[#e9e9eb] text-ink-black")
+                    }
+                  >
+                    {p.content}
+                  </div>
+                )}
               </div>
               <span className={"mt-0.5 px-9 text-[11px] text-ash " + (own ? "text-right" : "text-left")}>
                 {time(p.created_at)}
