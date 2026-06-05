@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Dossier de soutenance — Forum DevOps</title>
+<style>
+  :root{
+    --ink:#1a1a1a; --muted:#5b5b5b; --line:#d8d8d8; --bg-soft:#f4f4f5;
+    --accent:#111; --code-bg:#f6f6f7;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+  body{
+    font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+    color:var(--ink); font-size:10.6px; line-height:1.5; margin:0;
+  }
+  .page{padding:38px 48px;}
+  h1{font-size:29px; margin:0 0 4px; letter-spacing:-.5px;}
+  h2{font-size:17px; margin:17px 0 8px; padding-bottom:5px; border-bottom:2px solid var(--ink);}
+  h3{font-size:13px; margin:12px 0 5px;}
+  p{margin:6px 0;}
+  .sub{color:var(--muted); font-size:12px; margin:0 0 4px;}
+  .lead{font-size:12px;}
+  code{background:var(--code-bg); padding:1px 5px; border-radius:4px; font-family:"SF Mono",Menlo,Consolas,monospace; font-size:10px;}
+  pre{background:var(--code-bg); border:1px solid var(--line); border-radius:8px; padding:11px 13px; overflow:auto; font-family:"SF Mono",Menlo,Consolas,monospace; font-size:9px; line-height:1.45;}
+  pre .c{color:#6a737d;}
+  table{border-collapse:collapse; width:100%; margin:8px 0; font-size:10.2px;}
+  th,td{border:1px solid var(--line); padding:4.5px 8px; text-align:left; vertical-align:top;}
+  th{background:var(--bg-soft); font-weight:600;}
+  .why{background:var(--bg-soft); border-left:4px solid var(--ink); padding:9px 13px; margin:11px 0; border-radius:0 6px 6px 0;}
+  .why b:first-child{display:block; margin-bottom:2px;}
+  .clair{background:#fffaf0; border:1px solid #f0e2c0; border-left:4px solid #d9a531; padding:8px 12px; margin:10px 0; border-radius:0 6px 6px 0; font-size:10.4px;}
+  .clair b{color:#9a6b00;}
+  .tag{display:inline-block; background:var(--ink); color:#fff; font-size:9px; padding:2px 8px; border-radius:20px; vertical-align:middle; margin-left:6px;}
+  .grid2{display:flex; gap:16px;}
+  .grid2>div{flex:1;}
+  ul,ol{margin:7px 0; padding-left:20px;}
+  li{margin:3px 0;}
+  .meta{width:100%; margin:14px 0 4px;}
+  .meta td{border:none; border-bottom:1px solid var(--line); padding:5px 4px;}
+  .meta td:first-child{font-weight:600; width:160px; color:var(--muted);}
+  .pagebreak{page-break-before:always;}
+  .small{font-size:9.5px; color:var(--muted);}
+  .ok{color:#1a7f37; font-weight:600;}
+  .footer{margin-top:12px; padding-top:7px; border-top:1px solid var(--line); font-size:8.5px; color:var(--muted); display:flex; justify-content:space-between;}
+  svg{display:block; margin:8px auto;}
+  .legend{font-size:9px; color:var(--muted); text-align:center; margin-top:-2px;}
+  .kbd{font-family:"SF Mono",Menlo,monospace; font-size:9.5px;}
+  .twocol{column-count:2; column-gap:22px;}
+  .gloss{width:100%; margin:5px 0; font-size:9.1px; line-height:1.32;}
+  .gloss td{border:1px solid var(--line); padding:3px 8px; vertical-align:top;}
+  .gloss td:first-child{width:130px; font-weight:600; background:var(--bg-soft);}
+  .gloss .p{display:block; color:var(--muted); font-size:8.3px; margin-top:1px;}
+</style>
+</head>
+<body>
+
+<!-- ============ PAGE DE GARDE / CONTEXTE ============ -->
+<div class="page">
+  <p class="sub">Bachelor 3 Informatique — Module DevOps · Note 2 (fil rouge + soutenance)</p>
+  <h1>Forum DevOps — Dossier de soutenance</h1>
+  <p class="lead">Application web multi-services conteneurisée, livrée par une chaîne <b>Dev → Build → Ship → Run</b> automatisée. Ce document explique la <b>démarche</b>, <b>justifie chaque choix technique</b>, présente l'<b>architecture Docker</b>, la <b>chaîne CI/CD</b>, et donne le <b>déroulé exact de la démo</b>.</p>
+
+  <table class="meta">
+    <tr><td>Sujet</td><td>Forum de discussion (catégories → sujets → messages), API REST + persistance</td></tr>
+    <tr><td>Stack applicative</td><td>FastAPI (Python 3.12) · PostgreSQL 16 · Front React/nginx (optionnel)</td></tr>
+    <tr><td>Chaîne DevOps</td><td>Docker · Docker Compose · GitHub Actions · GHCR (registre)</td></tr>
+    <tr><td>Dépôt</td><td>github.com/camcarre/devops-fil-rouge-template</td></tr>
+  </table>
+
+  <h2>1. Contexte &amp; démarche DevOps</h2>
+  <p>On a fait un <b>forum simple</b> (catégories, sujets, messages) exprès : ce qu'on note ici, ce n'est pas l'appli, c'est la <b>« usine » qui la fabrique et la met en ligne toute seule</b>. Notre objectif depuis le début : qu'un nouveau membre puisse <b>tout lancer en une seule commande</b>, et qu'<b>aucune version ne soit livrée sans avoir été testée automatiquement</b>.</p>
+  <div class="clair"><b>💡 DevOps, en clair :</b> avant, les « Dev » écrivaient le code et le jetaient par-dessus le mur aux « Ops » qui devaient le faire tourner — d'où des bugs et des reproches. DevOps casse ce mur : <b>une seule équipe</b>, des <b>machines qui automatisent</b> le build/test/déploiement, et un <b>retour d'erreur rapide</b>.</div>
+
+  <h3>Équipe &amp; rôles — éviter le « mur » Dev/Ops</h3>
+  <table>
+    <tr><th>Membre</th><th>Rôle</th><th>Responsabilité principale</th></tr>
+    <tr><td>Théo Delporte</td><td>Lead Dev</td><td>Code FastAPI, modèles SQLAlchemy, Dockerfile applicatif</td></tr>
+    <tr><td>Baptiste Baudry</td><td><b>Lead Ops</b></td><td>docker-compose, publication d'images, déploiement, doc d'exploitation</td></tr>
+    <tr><td>Camille / Qualité</td><td>Lead Qualité / CI</td><td>Pipeline GitHub Actions, tests, scan sécurité</td></tr>
+    <tr><td>Cléo Deroo</td><td>Lead Produit / Doc</td><td>README, note d'architecture, cadrage</td></tr>
+  </table>
+  <div class="why">
+    <b>Pourquoi cette répartition&nbsp;?</b>
+    Les rôles sont nommés mais <b>poreux volontairement</b> : quand le pipeline de la Qualité s'est cassé (dépendance introuvable), l'Ops a diagnostiqué et corrigé sans attendre — c'est exactement l'<b>anti-mur Dev/Ops</b>. Chacun sait lire et réparer le maillon du voisin grâce à la doc et aux PR, ce qui réduit le <b>bus factor</b> (aucune personne indispensable).
+  </div>
+
+  <div class="footer"><span>Forum DevOps — Dossier de soutenance Note 2</span><span>Dev → Build → Ship → Run</span></div>
+</div>
+
+<!-- ============ POURQUOI CONTENEURISER + CHOIX TECHNO ============ -->
+<div class="page pagebreak">
+  <h2>2. Pourquoi conteneuriser&nbsp;? <span class="tag">Critère 1 — 30 %</span></h2>
+  <p>Conteneuriser, c'est <b>mettre l'application et tout ce dont elle a besoin pour tourner</b> (la bonne version de Python, les librairies…) <b>dans une boîte fermée</b> appelée image. Le problème qu'on résout :</p>
+  <div class="clair"><b>💡 L'analogie :</b> un conteneur, c'est comme un <b>plat préparé sous vide</b> : peu importe la cuisine où tu le réchauffes, le résultat est identique. Sans ça, chaque poste a « sa » recette légèrement différente → le fameux <i>« chez moi ça marche »</i>.</div>
+  <table>
+    <tr><th>Sans conteneur</th><th>Avec conteneur (Docker)</th></tr>
+    <tr><td>« Ça marche sur ma machine » — versions de Python/libs différentes selon les postes</td><td><b>Reproductibilité</b> : la même image tourne à l'identique sur tous les postes et en CI</td></tr>
+    <tr><td>Installation manuelle, longue, source d'erreurs</td><td><b>1 commande</b> (<code>docker compose up</code>) lève toute la stack</td></tr>
+    <tr><td>Difficile d'isoler API et base de données</td><td><b>Isolation</b> : chaque service dans son conteneur, réseau privé entre eux</td></tr>
+    <tr><td>Rollback compliqué</td><td>Image <b>taguée par version</b> → on redéploie l'ancienne en secondes</td></tr>
+  </table>
+  <div class="why">
+    <b>Lien culture DevOps (CALMS · DORA)</b>
+    La conteneurisation sert deux piliers concrets : <b>Reproductibilité</b> (l'image est la même partout, du laptop au registre) et <b>Automation</b> (elle se construit toute seule dans le pipeline). C'est ce qui rend possible une <b>fréquence de déploiement</b> élevée (indicateur DORA) sans casser la prod.
+  </div>
+
+  <h2>3. Choix techniques — justifiés</h2>
+  <table>
+    <tr><th>Composant</th><th>Choix</th><th>Pourquoi ce choix (arbitrage)</th></tr>
+    <tr><td>API</td><td>FastAPI (Python 3.12)</td><td>Async léger, typage fort, doc OpenAPI/Swagger <b>générée automatiquement</b> → la démo de l'API est gratuite (<code>/docs</code>).</td></tr>
+    <tr><td>Base de données</td><td>PostgreSQL 16</td><td>Relationnel, adapté à la hiérarchie catégories → sujets → messages ; robuste et facilement conteneurisable.</td></tr>
+    <tr><td>Image de base</td><td><code>python:3.12-slim</code></td><td><b>Officielle</b> (confiance/maj sécurité) et <b>slim</b> (image légère, surface d'attaque réduite) — compromis taille/compatibilité vs <code>alpine</code> qui complique les libs C.</td></tr>
+    <tr><td>Orchestration locale</td><td>Docker Compose</td><td>Décrit toute la stack dans un seul fichier versionné ; suffisant et reproductible pour le périmètre du module.</td></tr>
+    <tr><td>CI/CD</td><td>GitHub Actions</td><td><b>Intégré au dépôt</b> : pas d'outil tiers à câbler, secrets gérés nativement.</td></tr>
+    <tr><td>Registre</td><td>GHCR</td><td>Registre GitHub authentifié par le <code>GITHUB_TOKEN</code> intégré → <b>aucun secret à créer à la main</b> (vs Docker Hub).</td></tr>
+    <tr><td>Migrations DB</td><td>Alembic</td><td>Le schéma de la base est <b>versionné avec le code</b> et appliqué automatiquement au démarrage — pas de SQL manuel.</td></tr>
+  </table>
+  <p class="small">Périmètre 2025/2026 : Kubernetes &amp; monitoring Grafana existent dans le dépôt (dossier <code>k8s/</code>) mais sont <b>hors barème</b> — présentés comme bonus / ouverture si le temps le permet.</p>
+
+  <div class="footer"><span>Forum DevOps — Dossier de soutenance Note 2</span><span>2 · Pourquoi Docker — 3 · Choix techniques</span></div>
+</div>
+
+<!-- ============ ARCHITECTURE DOCKER ============ -->
+<div class="page pagebreak">
+  <h2>4. Architecture Docker <span class="tag">Critère 1 — 30 %</span></h2>
+  <p>Trois services isolés, reliés par un <b>réseau privé Docker</b>. Seuls les ports utiles sont exposés vers l'hôte ; l'API parle à la base par le réseau interne (jamais exposée à l'extérieur).</p>
+
+  <!-- Architecture services -->
+  <svg width="640" height="220" viewBox="0 0 640 220" font-family="-apple-system,Helvetica,Arial" font-size="11">
+    <!-- host boundary -->
+    <rect x="8" y="8" width="624" height="204" rx="10" fill="none" stroke="#bbb" stroke-dasharray="5 4"/>
+    <text x="20" y="26" fill="#888" font-size="10">réseau Docker « forum-network » (bridge privé)</text>
+    <!-- browser -->
+    <rect x="24" y="74" width="96" height="58" rx="8" fill="#f4f4f5" stroke="#1a1a1a"/>
+    <text x="72" y="99" text-anchor="middle">Navigateur</text>
+    <text x="72" y="115" text-anchor="middle" font-size="9" fill="#666">utilisateur</text>
+    <!-- frontend -->
+    <rect x="176" y="60" width="120" height="86" rx="8" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/>
+    <text x="236" y="86" text-anchor="middle" font-weight="600">frontend</text>
+    <text x="236" y="103" text-anchor="middle" font-size="9" fill="#666">nginx :8080</text>
+    <text x="236" y="119" text-anchor="middle" font-size="9" fill="#666">React (statique)</text>
+    <text x="236" y="135" text-anchor="middle" font-size="8.5" fill="#888">proxy /api →</text>
+    <!-- api -->
+    <rect x="352" y="60" width="120" height="86" rx="8" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/>
+    <text x="412" y="86" text-anchor="middle" font-weight="600">api</text>
+    <text x="412" y="103" text-anchor="middle" font-size="9" fill="#666">FastAPI :8000</text>
+    <text x="412" y="119" text-anchor="middle" font-size="9" fill="#666">uvicorn</text>
+    <text x="412" y="135" text-anchor="middle" font-size="8.5" fill="#888">alembic upgrade</text>
+    <!-- db -->
+    <rect x="528" y="60" width="96" height="86" rx="8" fill="#f4f4f5" stroke="#1a1a1a" stroke-width="1.5"/>
+    <text x="576" y="86" text-anchor="middle" font-weight="600">db</text>
+    <text x="576" y="103" text-anchor="middle" font-size="9" fill="#666">Postgres 16</text>
+    <text x="576" y="119" text-anchor="middle" font-size="9" fill="#666">:5432</text>
+    <!-- volume -->
+    <path d="M548 168 a28 7 0 0 0 56 0 v-14 a28 7 0 0 0 -56 0 z" fill="#eee" stroke="#999"/>
+    <ellipse cx="576" cy="154" rx="28" ry="7" fill="#f4f4f5" stroke="#999"/>
+    <text x="576" y="190" text-anchor="middle" font-size="8.5" fill="#666">volume persistant</text>
+    <!-- arrows -->
+    <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#1a1a1a"/></marker></defs>
+    <line x1="120" y1="103" x2="174" y2="103" stroke="#1a1a1a" marker-end="url(#a)"/>
+    <text x="147" y="97" text-anchor="middle" font-size="8" fill="#555">:8080</text>
+    <line x1="296" y1="103" x2="350" y2="103" stroke="#1a1a1a" marker-end="url(#a)"/>
+    <text x="323" y="97" text-anchor="middle" font-size="8" fill="#555">/api</text>
+    <line x1="472" y1="103" x2="526" y2="103" stroke="#1a1a1a" marker-end="url(#a)"/>
+    <text x="499" y="97" text-anchor="middle" font-size="8" fill="#555">SQL</text>
+    <line x1="576" y1="146" x2="576" y2="150" stroke="#999"/>
+  </svg>
+  <p class="legend">Flux : navigateur → nginx (sert le front + reverse-proxy <code>/api</code> pour éviter le CORS) → FastAPI → PostgreSQL (volume = données qui survivent au redémarrage).</p>
+
+  <h3>4.1 Dockerfile de l'API — <i>multi-stage</i> (image légère)</h3>
+  <div class="clair"><b>💡 Multi-stage, en clair :</b> on cuisine dans une <b>grande cuisine pleine d'outils</b> (étape <i>builder</i>), puis on ne sert que <b>l'assiette finale</b> sans tout le bazar de préparation (étape <i>runtime</i>). L'image livrée est donc plus <b>petite</b> et plus <b>sûre</b> (moins de choses = moins de failles possibles).</div>
+  <div class="grid2">
+    <div>
+<pre><span class="c"># ÉTAPE 1 — builder : installe les deps</span>
+FROM python:3.12-slim AS builder
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir \
+    --prefix=/install -r requirements.txt
+
+<span class="c"># ÉTAPE 2 — runtime : image finale</span>
+FROM python:3.12-slim AS runtime
+WORKDIR /app
+COPY --from=builder /install /usr/local
+COPY src/ ./src/
+COPY alembic/ ./alembic/  alembic.ini .
+EXPOSE 8000
+CMD ["sh","-c","uvicorn src.main:app \
+     --host 0.0.0.0 --port ${PORT}"]</pre>
+    </div>
+    <div>
+      <p class="small" style="margin-top:0"><b>À expliquer à l'oral :</b></p>
+      <ul class="small">
+        <li><b>Multi-stage</b> : l'étape <i>builder</i> compile/installe les dépendances ; l'image finale ne récupère que le résultat (<code>/install</code>) — <b>pas les outils de build</b>. Résultat : image plus petite et plus sûre.</li>
+        <li><b>Base officielle + slim</b> : maj de sécurité suivies, surface réduite.</li>
+        <li><b><code>--no-cache-dir</code></b> : pas de cache pip inutile dans l'image.</li>
+        <li><b>Couches ordonnées</b> : <code>requirements.txt</code> copié <i>avant</i> le code → le cache Docker ne réinstalle les libs que si elles changent (builds plus rapides).</li>
+      </ul>
+      <div class="why" style="margin-top:8px"><b>Limite assumée</b>Les conteneurs tournent en <b>root</b> (la grille recommande non-root) → identifié comme <b>axe d'amélioration</b> n°1 (ajouter un <code>USER appuser</code>).</div>
+    </div>
+  </div>
+
+  <h3>4.2 Dockerfile du front — node → nginx</h3>
+  <p class="small">Même principe multi-stage : on <b>build</b> le React avec Node, puis on ne garde qu'un <b>nginx</b> qui sert les fichiers statiques (image finale minuscule, pas de Node en prod).</p>
+<pre>FROM node:20-alpine AS build      <span class="c"># compile le React</span>
+RUN npm ci &amp;&amp; npm run build
+FROM nginx:alpine AS runtime      <span class="c"># ne garde que le statique + nginx</span>
+COPY --from=build /app/dist /usr/share/nginx/html</pre>
+
+  <div class="footer"><span>Forum DevOps — Dossier de soutenance Note 2</span><span>4 · Architecture Docker</span></div>
+</div>
+
+<!-- ============ COMPOSE ============ -->
+<div class="page pagebreak">
+  <h3>4.3 docker-compose.yml — l'orchestration locale</h3>
+  <p>Compose décrit les 3 services, l'ordre de démarrage et le stockage, dans un <b>seul fichier</b>.</p>
+  <div class="clair"><b>💡 En clair :</b> Compose est le <b>chef d'orchestre</b>. Au lieu de lancer chaque conteneur à la main dans le bon ordre, on écrit une fois « voilà mes 3 services et comment ils se parlent », et <code>docker compose up</code> joue toute la partition.</div>
+<pre>services:
+  db:
+    image: postgres:16-alpine
+    environment:                      <span class="c"># injectées depuis .env (hors Git)</span>
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes: [ postgres-data:/var/lib/postgresql/data ]   <span class="c"># persistance</span>
+    healthcheck:                      <span class="c"># « la base est-elle prête ? »</span>
+      test: ["CMD-SHELL","pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s   retries: 10
+
+  api:
+    build: .
+    environment:
+      DATABASE_URL: postgresql://...@db:5432/...   <span class="c"># « db » = nom du service = DNS interne</span>
+    depends_on:
+      db: { condition: service_healthy }            <span class="c"># attend que la base soit healthy</span>
+    command: sh -c "alembic upgrade head &amp;&amp; uvicorn src.main:app ..."   <span class="c"># migre PUIS démarre</span>
+
+  frontend:
+    build: ./frontend
+    depends_on: [ api ]
+
+volumes: { postgres-data: {} }        <span class="c"># volume nommé = données qui survivent</span>
+networks: { forum-network: { driver: bridge } }</pre>
+
+  <table>
+    <tr><th>Élément Compose</th><th>Ce qu'il garantit (à dire à l'oral)</th></tr>
+    <tr><td><code>healthcheck</code> + <code>depends_on: service_healthy</code></td><td>L'API ne démarre <b>pas avant</b> que la base réponde → pas de crash au boot. <b>Dépendances cohérentes</b> (critère grille).</td></tr>
+    <tr><td><code>alembic upgrade head &amp;&amp; uvicorn</code></td><td>Le schéma de la base est <b>migré automatiquement</b> avant le démarrage : zéro étape manuelle.</td></tr>
+    <tr><td>Volume nommé <code>postgres-data</code></td><td><b>Persistance</b> : on peut tuer/relancer les conteneurs, les données restent.</td></tr>
+    <tr><td>Réseau <code>forum-network</code></td><td>L'API joint la base via <code>db:5432</code> (DNS interne). La base n'est <b>jamais exposée</b> à l'hôte.</td></tr>
+    <tr><td>Variables <code>${...}</code> via <code>.env</code></td><td><b>Aucun secret dans Git</b> — le <code>.env</code> est dans <code>.gitignore</code> (critère sécurité).</td></tr>
+  </table>
+
+  <div class="why"><b>Question type N3 du jury : « un conteneur ne démarre pas, que faites-vous ? »</b>
+  <span class="kbd">docker compose ps</span> (qui est down) → <span class="kbd">docker compose logs api</span> (lire l'erreur) → <span class="kbd">docker compose exec db pg_isready</span> (la base répond-elle ?). Ce réflexe = <b>feedback rapide</b> et diagnostic autonome.</div>
+
+  <div class="footer"><span>Forum DevOps — Dossier de soutenance Note 2</span><span>4.3 · docker-compose</span></div>
+</div>
+
+<!-- ============ CI/CD ============ -->
+<div class="page pagebreak">
+  <h2>5. La chaîne CI/CD <span class="tag">Critère 2 — 30 %</span></h2>
+  <p>Dès qu'on envoie du code sur GitHub (<code>push</code>), une suite d'étapes se lance <b>toute seule</b>. Si tout passe, l'image de l'API est <b>publiée</b> avec une étiquette unique (le numéro du commit).</p>
+  <div class="clair"><b>💡 En clair :</b> c'est une <b>chaîne de montage automatique</b>. À chaque modification, un robot vérifie le code (lint), lance les tests, contrôle la sécurité, fabrique l'image et la range au dépôt. Si une étape échoue, <b>la chaîne s'arrête et rien n'est livré</b> — l'erreur est attrapée par la machine, pas par l'utilisateur.</div>
+
+  <!-- pipeline flow -->
+  <svg width="640" height="120" viewBox="0 0 640 120" font-family="-apple-system,Helvetica,Arial" font-size="10">
+    <defs><marker id="b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#1a1a1a"/></marker></defs>
+    <g text-anchor="middle">
+      <rect x="8"  y="40" width="92" height="44" rx="7" fill="#f4f4f5" stroke="#1a1a1a"/><text x="54" y="60">push master</text><text x="54" y="74" font-size="8" fill="#666">déclencheur</text>
+      <rect x="124" y="40" width="92" height="44" rx="7" fill="#fff" stroke="#1a1a1a"/><text x="170" y="60">lint + test</text><text x="170" y="74" font-size="8" fill="#666">ruff · pytest · audit</text>
+      <rect x="240" y="40" width="92" height="44" rx="7" fill="#fff" stroke="#1a1a1a"/><text x="286" y="60">scan</text><text x="286" y="74" font-size="8" fill="#666">Trivy (sécurité)</text>
+      <rect x="356" y="40" width="92" height="44" rx="7" fill="#fff" stroke="#1a1a1a"/><text x="402" y="60">build image</text><text x="402" y="74" font-size="8" fill="#666">docker build</text>
+      <rect x="472" y="40" width="100" height="44" rx="7" fill="#111" stroke="#111"/><text x="522" y="60" fill="#fff">push GHCR</text><text x="522" y="74" font-size="8" fill="#bbb">tag = SHA</text>
+      <line x1="100" y1="62" x2="122" y2="62" stroke="#1a1a1a" marker-end="url(#b)"/>
+      <line x1="216" y1="62" x2="238" y2="62" stroke="#1a1a1a" marker-end="url(#b)"/>
+      <line x1="332" y1="62" x2="354" y2="62" stroke="#1a1a1a" marker-end="url(#b)"/>
+      <line x1="448" y1="62" x2="470" y2="62" stroke="#1a1a1a" marker-end="url(#b)"/>
+    </g>
+    <text x="286" y="20" text-anchor="middle" font-size="9" fill="#888">si une étape échoue → le pipeline s'arrête (rouge) → rien n'est publié</text>
+  </svg>
+
+  <table>
+    <tr><th>Étape</th><th>Outil</th><th>Pourquoi elle existe</th></tr>
+    <tr><td><b>Lint</b></td><td><code>ruff</code></td><td>Code propre et homogène avant tout — étape la plus rapide, on échoue tôt et pas cher (<i>fail fast</i>).</td></tr>
+    <tr><td><b>Audit deps</b></td><td><code>pip-audit</code></td><td>Détecte les <b>failles connues (CVE)</b> dans les dépendances.</td></tr>
+    <tr><td><b>Test</b></td><td><code>pytest</code> (18 tests)</td><td>Vérifie que le code fait ce qu'on attend → fait baisser le <b>change failure rate</b> (DORA).</td></tr>
+    <tr><td><b>Scan</b></td><td><code>Trivy</code></td><td>Scanne l'<b>image</b> construite (failles HIGH/CRITICAL). <b>Règle : on ne publie que ce qu'on scanne.</b></td></tr>
+    <tr><td><b>Build + Push</b></td><td>GHCR</td><td>Publie l'image taguée par <b>SHA</b> → traçable et <b>rollback</b> immédiat sur une version antérieure.</td></tr>
+  </table>
+  <div class="why"><b>Sécurité — secrets hors Git</b>
+  Le push s'authentifie avec le <code>GITHUB_TOKEN</code> fourni par Actions (jamais commité). Le job d'intégration génère le <code>.env</code> à partir des <b>GitHub Secrets</b>. Aucun mot de passe n'est dans le dépôt.</div>
+
+  <h3>Pourquoi cet ordre&nbsp;? (arbitrage à défendre)</h3>
+  <p>Le push est <b>gaté</b> sur lint+test <b>ET</b> scan : on ne publie <b>jamais</b> une image qui n'a pas passé la sécurité. Compromis assumé <b>vitesse ↔ sûreté</b> : on accepte un pipeline un peu plus long pour ne jamais livrer une image vulnérable. C'est le lien direct <b>outillage → fiabilité de livraison</b>.</p>
+
+  <div class="footer"><span>Forum DevOps — Dossier de soutenance Note 2</span><span>5 · Chaîne CI/CD</span></div>
+</div>
+
+<!-- ============ DEMO ============ -->
+<div class="page pagebreak">
+  <h2>6. Démo — déroulé pas à pas <span class="tag">Critère 3 — 20 %</span></h2>
+  <p class="lead">12 min max. Viser <b>~40 % de discours culture/organisation</b>, ~60 % technique. Plan B (captures) prêt si réseau instable.</p>
+
+  <h3>① Déploiement local — <i>« ça marche en une commande »</i> (2 min)</h3>
+<pre><span class="c"># pré-requis : le .env est rempli (jamais commité)</span>
+cp .env.example .env
+docker compose up --build          <span class="c"># lève db + api + frontend</span></pre>
+  <table>
+    <tr><th>On montre</th><th>On dit</th></tr>
+    <tr><td><span class="kbd">docker compose ps</span> → 3 services <span class="ok">Up (healthy)</span></td><td>« healthcheck : l'API n'a démarré qu'une fois la base prête »</td></tr>
+    <tr><td><code>localhost:8000/health</code> → <code>{"status":"ok"}</code></td><td>« sonde de vie de l'API »</td></tr>
+    <tr><td><code>localhost:8000/docs</code> → on crée un user, on se logge</td><td>« doc Swagger générée automatiquement par FastAPI »</td></tr>
+    <tr><td>le <b>front</b> (forum, bulles iMessage)</td><td>« nginx sert le statique et reverse-proxy <code>/api</code> »</td></tr>
+  </table>
+
+  <h3>② Preuve CI/CD — <i>pipeline vert + image publiée</i> (2 min)</h3>
+  <table>
+    <tr><th>On montre (écran GitHub)</th><th>On dit</th></tr>
+    <tr><td>Onglet <b>Actions</b> → dernier run <span class="ok">vert</span> sur <code>master</code></td><td>« lint → test → scan → build → push, tout vert »</td></tr>
+    <tr><td>Onglet <b>Packages</b> → image <code>...-api</code> taguée par SHA</td><td>« publiée sur GHCR, traçable, rollback possible »</td></tr>
+  </table>
+
+  <h3>③ Raconter un échec résolu — <i>le feedback en action</i> (1 min) <span class="tag">point « Excellent »</span></h3>
+  <div class="why"><b>L'histoire vraie à raconter</b>
+  « Notre CI était annoncée verte mais en réalité <b>cassée</b> : une version de dépendance n'existait pas, l'install échouait. L'Ops a vu le job <b>rouge</b>, lu les logs, corrigé la version, re-poussé → <b>vert</b>. Au passage on a monté les dépendances et <b>éliminé 11 failles (CVE)</b>. C'est ça le feedback rapide : l'erreur est détectée par la machine, pas par un utilisateur en prod. »</div>
+
+  <h2>7. Posture DevOps — culture (CALMS &amp; DORA) <span class="tag">Critères 3+4 — 40 %</span></h2>
+  <div class="twocol">
+    <p><b>CALMS</b></p>
+    <ul>
+      <li><b>Culture</b> : rôles clairs mais poreux, revues par PR.</li>
+      <li><b>Automation</b> : pipeline complet + migrations auto.</li>
+      <li><b>Lean</b> : petites PR, <i>fail fast</i>, feedback court.</li>
+      <li><b>Measurement</b> : pip-audit + Trivy mesurent la sécurité à chaque push.</li>
+      <li><b>Sharing</b> : README + ce dossier → bus factor réduit.</li>
+    </ul>
+    <p style="break-before:column"><b>DORA — ce que notre chaîne améliore</b></p>
+    <ul>
+      <li><b>Deployment frequency</b> ↑ : image prête à chaque push.</li>
+      <li><b>Change failure rate</b> ↓ : lint+test+scan bloquent le mauvais code.</li>
+      <li><b>Lead time</b> ↓ : du commit à l'image publiée, automatique.</li>
+      <li><b>MTTR</b> ↓ : images taguées par SHA → rollback en secondes.</li>
+    </ul>
+  </div>
+
+  <h3>Limites connues &amp; pistes (à assumer à l'oral)</h3>
+  <ul class="small">
+    <li>Conteneurs en <b>root</b> → ajouter un utilisateur non-root.</li>
+    <li>Front <b>pas encore scanné</b> donc pas publié (on ne publie que ce qu'on scanne) → ajouter son scan Trivy.</li>
+    <li>Pas de déploiement continu réel (pas de cible de prod) → le « CD » s'arrête à la publication d'image.</li>
+  </ul>
+
+  <div class="footer"><span>Forum DevOps — Dossier de soutenance Note 2</span><span>6 · Démo — 7 · Culture DevOps</span></div>
+</div>
+
+<!-- ============ ANTISECHE ============ -->
+<div class="page pagebreak">
+  <h2>8. Antisèche — commandes de la démo</h2>
+  <h3>Lancer / vérifier</h3>
+<pre>cp .env.example .env              <span class="c"># 1. config (hors Git)</span>
+docker compose up --build -d      <span class="c"># 2. lever la stack</span>
+docker compose ps                 <span class="c"># 3. tout est Up (healthy) ?</span>
+curl localhost:8000/health        <span class="c"># 4. API vivante</span>
+open http://localhost:8000/docs   <span class="c"># 5. Swagger (créer user, login)</span>
+open http://localhost:8080        <span class="c"># 6. le front (forum)</span></pre>
+  <h3>Diagnostiquer (si un service est down)</h3>
+<pre>docker compose logs api           <span class="c"># lire l'erreur de l'API</span>
+docker compose logs db            <span class="c"># lire l'erreur de la base</span>
+docker compose exec db pg_isready <span class="c"># la base répond-elle ?</span></pre>
+  <h3>Nettoyer</h3>
+<pre>docker compose down -v            <span class="c"># arrêt + suppression du volume</span></pre>
+
+  <h3>Checklist « avant la soutenance »</h3>
+  <table>
+    <tr><th>À vérifier</th><th>État</th></tr>
+    <tr><td>Dépôt à jour, <code>.env</code> non commité</td><td class="ok">✓</td></tr>
+    <tr><td>Pipeline vert sur <code>master</code> (preuve onglet Actions)</td><td class="ok">✓</td></tr>
+    <tr><td>Image publiée sur GHCR (onglet Packages)</td><td class="ok">✓</td></tr>
+    <tr><td>Note d'architecture présente (<code>docs/</code>)</td><td class="ok">✓</td></tr>
+    <tr><td>README à jour (équipe, stack, jalons)</td><td>à compléter (noms TODO)</td></tr>
+    <tr><td>Démo testée sur le PC de soutenance + plan B (captures)</td><td>à faire la veille</td></tr>
+    <tr><td>Chaque membre sait répondre sur sa zone</td><td>répétition chronométrée</td></tr>
+  </table>
+
+  <p class="small" style="margin-top:18px">Document de travail interne à l'équipe — Forum DevOps, fil rouge Bachelor 3 · aligné sur la grille Note 2 (périmètre ajusté 2025/2026).</p>
+
+  <div class="footer"><span>Forum DevOps — Dossier de soutenance Note 2</span><span>8 · Antisèche</span></div>
+</div>
+
+<!-- ============ GLOSSAIRE ============ -->
+<div class="page pagebreak">
+  <h2>9. Glossaire — à réviser la veille</h2>
+  <p class="lead">Chaque terme en une phrase + <i>où on l'utilise dans le projet</i>. De quoi répondre du tac au tac aux questions « niveau 1 » du jury (« définissez… »).</p>
+
+  <table class="gloss">
+    <tr><td>Conteneur</td><td>Application empaquetée avec tout son environnement (libs, runtime), qui tourne isolée de la machine hôte.<span class="p">→ nos 3 services : api, db, frontend.</span></td></tr>
+    <tr><td>Image vs conteneur</td><td>L'<b>image</b> est le modèle figé (la recette) ; le <b>conteneur</b> est une instance qui tourne (le plat). Une image → plusieurs conteneurs.<span class="p">→ on build l'image API, on la lance en conteneur.</span></td></tr>
+    <tr><td>Dockerfile</td><td>Recette qui décrit comment construire une image, étape par étape.<span class="p">→ un pour l'API, un pour le front.</span></td></tr>
+    <tr><td>Multi-stage</td><td>Dockerfile en plusieurs étapes : on compile dans l'une, on ne garde que le résultat dans l'image finale → image plus petite et plus sûre.<span class="p">→ builder (deps) → runtime (app seule).</span></td></tr>
+    <tr><td>Docker Compose</td><td>Outil qui décrit et lance plusieurs conteneurs ensemble depuis un seul fichier <code>docker-compose.yml</code>.<span class="p">→ <code>docker compose up</code> lève toute la stack.</span></td></tr>
+    <tr><td>Healthcheck</td><td>Test périodique « le service est-il prêt à répondre ? » que Docker exécute.<span class="p">→ <code>pg_isready</code> sur la base ; l'API attend qu'elle soit healthy.</span></td></tr>
+    <tr><td>Volume</td><td>Espace de stockage géré par Docker, qui survit à la suppression du conteneur → la donnée persiste.<span class="p">→ <code>postgres-data</code> garde la base.</span></td></tr>
+    <tr><td>Réseau / DNS interne</td><td>Réseau privé entre conteneurs ; chaque service est joignable par son <b>nom</b>.<span class="p">→ l'API joint la base via <code>db:5432</code>, jamais exposée dehors.</span></td></tr>
+    <tr><td>Reverse-proxy</td><td>Serveur qui reçoit les requêtes et les redirige vers le bon service interne.<span class="p">→ nginx sert le front et renvoie <code>/api</code> vers FastAPI (évite le CORS).</span></td></tr>
+    <tr><td>CI/CD</td><td><b>CI</b> = intégration continue (tester/builder à chaque push) ; <b>CD</b> = livraison continue (publier l'image prête).<span class="p">→ GitHub Actions, du commit à l'image GHCR.</span></td></tr>
+    <tr><td>Pipeline</td><td>Suite d'étapes automatiques déclenchées par un événement Git (push, PR).<span class="p">→ lint → test → scan → build → push.</span></td></tr>
+    <tr><td>Registre / GHCR</td><td>Entrepôt d'images Docker. <b>GHCR</b> = celui de GitHub, authentifié par le token intégré.<span class="p">→ on y publie l'image API taguée par SHA.</span></td></tr>
+    <tr><td>Tag SHA</td><td>Étiquette d'image = identifiant exact du commit → on sait quelle version tourne, rollback immédiat.<span class="p">→ <code>...-api:&lt;sha&gt;</code>.</span></td></tr>
+    <tr><td>Lint</td><td>Analyse du code <i>sans l'exécuter</i> : style, imports inutiles, erreurs probables.<span class="p">→ <code>ruff</code>, première étape (fail fast).</span></td></tr>
+    <tr><td>CVE</td><td>Faille de sécurité publiquement répertoriée (Common Vulnerabilities and Exposures).<span class="p">→ détectées par <code>pip-audit</code> (deps) et <code>Trivy</code> (image) ; on en a corrigé 11.</span></td></tr>
+    <tr><td>Migration (Alembic)</td><td>Script versionné qui fait évoluer le schéma de la base avec le code.<span class="p">→ <code>alembic upgrade head</code> joué au démarrage de l'API.</span></td></tr>
+    <tr><td>Secret hors Git</td><td>Mot de passe / clé jamais commité : injecté via <code>.env</code> (local) ou GitHub Secrets (CI).<span class="p">→ <code>.env</code> est dans <code>.gitignore</code>.</span></td></tr>
+    <tr><td>Fail fast</td><td>Échouer le plus tôt et le moins cher possible (lint avant tests avant build).<span class="p">→ on ne perd pas de temps à builder du code qui ne lint même pas.</span></td></tr>
+    <tr><td>CALMS</td><td>Les 5 piliers DevOps : <b>C</b>ulture, <b>A</b>utomation, <b>L</b>ean, <b>M</b>easurement, <b>S</b>haring.<span class="p">→ on cite Automation (pipeline) + Sharing (doc, rôles).</span></td></tr>
+    <tr><td>DORA</td><td>4 indicateurs de perf DevOps : fréquence de déploiement, lead time, taux d'échec, MTTR.<span class="p">→ notre CI fait ↑ la fréquence et ↓ le taux d'échec.</span></td></tr>
+    <tr><td>Bus factor</td><td>Nombre de personnes dont le départ bloquerait le projet. Plus il est haut, mieux c'est.<span class="p">→ doc + PR → personne n'est indispensable.</span></td></tr>
+  </table>
+
+  <div class="footer"><span>Forum DevOps — Dossier de soutenance Note 2</span><span>9 · Glossaire</span></div>
+</div>
+
+</body>
+</html>
