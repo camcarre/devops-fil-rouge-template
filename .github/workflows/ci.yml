@@ -7,6 +7,20 @@ on:
     branches: [master]
 
 jobs:
+  secret-scan:
+    name: Secret scan (gitleaks)
+    runs-on: ubuntu-latest
+    # Filet anti-secret : échoue si une clé/mot de passe/token fuit dans le code
+    # ou dans l'historique Git. Posture proactive plutôt que la seule discipline.
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # historique complet pour scanner tous les commits
+      - name: Scan des secrets (gitleaks)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   lint-test:
     name: Lint + Tests
     runs-on: ubuntu-latest

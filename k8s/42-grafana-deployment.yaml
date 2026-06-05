@@ -19,10 +19,17 @@ spec:
           ports:
             - containerPort: 3000
           env:
+            # Identifiants admin tirés du Secret (jamais en clair dans Git).
             - name: GF_SECURITY_ADMIN_USER
-              value: admin
+              valueFrom:
+                secretKeyRef:
+                  name: forum-secret
+                  key: GRAFANA_ADMIN_USER
             - name: GF_SECURITY_ADMIN_PASSWORD
-              value: admin
+              valueFrom:
+                secretKeyRef:
+                  name: forum-secret
+                  key: GRAFANA_ADMIN_PASSWORD
             - name: GF_SERVER_ROOT_URL
               value: http://grafana.local
           volumeMounts:
