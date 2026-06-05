@@ -40,7 +40,9 @@ jobs:
         run: ruff check src tests
 
       - name: Audit dependencies (pip-audit)
-        run: python -m pip_audit --progress=off
+        # On audite nos dépendances déclarées (requirements), pas l'outillage du
+        # runner CI (pip/setuptools) qui n'est pas livré dans notre image.
+        run: python -m pip_audit -r requirements.txt -r requirements-dev.txt --progress=off
 
       - name: Tests (pytest)
         env:
