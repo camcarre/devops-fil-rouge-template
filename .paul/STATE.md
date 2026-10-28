@@ -11,20 +11,20 @@ See: .paul/PROJECT.md (updated 2026-06-03)
 
 Milestone: v0.1 Fil Rouge (S1→S6)
 Phase: 6 of 6 (S6 — Soutenance) — In Progress
-Plan: 06-01 COMPLETE — loop fermé ; next 06-02 (répétition démo) + 06-03 (slides)
-Status: Ready for next PLAN (06-02)
-Last activity: 2026-06-04 — UNIFY 06-01 : docs/architecture.md + README + k8s/README.md livrés
+Plan: 06-02 (script démo) + 06-03 (slides + rétrospective) — créés, en attente d'approbation
+Status: PLAN ✓ — awaiting APPLY
+Last activity: 2026-06-04 — PLAN 06-02 + 06-03 créés
 
 Progress:
 - Milestone: [█████████░] 90% (Phase 1→5 done, Phase 6 en cours)
-- Phase 6: [████░░░░░░] 33% (06-01 ✓, 06-02 et 06-03 restants)
+- Phase 6: [████░░░░░░] 33% (06-01 ✓, 06-02 et 06-03 planned)
 
 ## Loop Position
 
 Current loop state:
 ```
 PLAN ──▶ APPLY ──▶ UNIFY
-  ✓        ✓        ✓     [06-01 loop fermé — prêt pour 06-02]
+  ✓        ○        ○     [06-02 + 06-03 créés, en attente APPLY]
 ```
 
 ## Accumulated Context
@@ -62,9 +62,9 @@ Aucune restriction — code applicatif autorisé.
 ## Session Continuity
 
 Last session: 2026-06-04
-Stopped at: UNIFY 06-01 complet
-Next action: `/paul:plan` → Phase 6 plan 06-02 (répétition démo bout-en-bout) et 06-03 (slides soutenance)
-Resume context: docs livrées (architecture.md 132L, README TODO:, k8s/README démo). Placeholders README à compléter par l'équipe. Plans 06-02 et 06-03 restants.
+Stopped at: PLAN 06-02 + 06-03 créés
+Next action: `/paul:apply .paul/phases/06-soutenance/06-02-PLAN.md` puis `/paul:apply .paul/phases/06-soutenance/06-03-PLAN.md`
+Resume context: 06-01 ✓ docs livrées. 06-02 = docs/demo-script.md (script démo + checklist). 06-03 = docs/slides-plan.md + docs/retrospective.md.
 
 ---
 *STATE.md — Updated after every significant action*
